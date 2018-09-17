@@ -5,6 +5,7 @@ packages:
   - dplyr
   - lakeattributes
   - glmtools
+  - mda.lakes
 
 sources:
   - 1_get_lake_attr/src/lake_attr_utils.R
@@ -12,3 +13,12 @@ sources:
 targets:
   1_get_lake_attr:
     depends:
+      - 1_get_lake_attr/out/glm_nhd_2360642.nml # working with mendota as example
+
+  lake_list: # list of nhd_ids for which to create nml task table
+    command:
+
+  1_get_lake_attr/out/glm_nhd_2360642.nml: # turn this into a task table for more lakes
+    command: get_base_lake_nml(nhd_id = I('nhd_2360642'), nml_out = target_name)
+
+
