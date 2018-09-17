@@ -36,6 +36,7 @@ targets:
       task_plan = nml_tasks,
       remake_file = I('1_get_lake_attr.yml'))
 
+# lake Mendota test nml; will eventually go into 1_nml_tasks_makefile.yml
   1_get_lake_attr/out/glm_nhd_2360642.nml: # turn this into a task table for more lakes
     command: get_base_lake_nml(
       nhd_id = I('nhd_2360642'),
