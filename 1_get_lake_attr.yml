@@ -9,14 +9,25 @@ packages:
 
 sources:
   - 1_get_lake_attr/src/lake_attr_utils.R
+  - 1_get_lake_attr/src/create_nml_tasks.R
+  - 1_get_lake_attr/src/create_nml_tasks_makefile.R
 
 targets:
   1_get_lake_attr:
     depends:
       - 1_get_lake_attr/out/glm_nhd_2360642.nml # working with mendota as example
 
+  1_get_lake_attr/in/feature_crosswalk.rds: # lake list from pipeline #1, lake-temperature-model-prep
+    command: gd_get('1_get_lake_attr/in/feature_crosswalk.rds.ind')
+
   lake_list: # list of nhd_ids for which to create nml task table
-    command:
+    command: lake_list(crosswalk_file = '1_get_lake_attr/in/feature_crosswalk.rds')
+
+  nml_tasks:
+    command: create_nml_tasks()
+
+  1_nml_tasks_makefile:
+    command: create_nml_tasks_makefile()
 
   1_get_lake_attr/out/glm_nhd_2360642.nml: # turn this into a task table for more lakes
     command: get_base_lake_nml(nhd_id = I('nhd_2360642'), nml_out = target_name)
