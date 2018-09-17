@@ -1,0 +1,14 @@
+target_default: 1_get_lake_attr
+
+packages:
+  - scipiper
+  - dplyr
+  - lakeattributes
+  - glmtools
+
+sources:
+  - 1_get_lake_attr/src/lake_attr_utils.R
+
+targets:
+  1_get_lake_attr:
+    depends:
