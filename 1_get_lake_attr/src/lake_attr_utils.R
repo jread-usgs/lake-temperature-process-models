@@ -1,14 +1,11 @@
 # functions for gathering lake attributes
 
 lake_list <- function(crosswalk_file){
-  all_sites <- readRDS(crosswalk_file) %>%
+  lake_list <- readRDS(crosswalk_file) %>%
     dplyr::filter(!duplicated(site_id))
 
   return(lake_list)
 }
-
-
-
 
 
 

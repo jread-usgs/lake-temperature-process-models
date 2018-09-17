@@ -7,6 +7,10 @@ packages:
   - glmtools
   - mda.lakes
 
+file_extensions:
+  - feather
+  - ind
+
 sources:
   - 1_get_lake_attr/src/lake_attr_utils.R
   - 1_get_lake_attr/src/create_nml_tasks.R
@@ -24,12 +28,17 @@ targets:
     command: lake_list(crosswalk_file = '1_get_lake_attr/in/feature_crosswalk.rds')
 
   nml_tasks:
-    command: create_nml_tasks()
+    command: create_nml_tasks(lake_list)
 
-  1_nml_tasks_makefile:
-    command: create_nml_tasks_makefile()
+  1_nml_tasks_makefile.yml:
+    command: create_nml_tasks_makefile(
+      makefile = target_name,
+      task_plan = nml_tasks,
+      remake_file = I('1_get_lake_attr.yml'))
 
   1_get_lake_attr/out/glm_nhd_2360642.nml: # turn this into a task table for more lakes
-    command: get_base_lake_nml(nhd_id = I('nhd_2360642'), nml_out = target_name)
+    command: get_base_lake_nml(
+      nhd_id = I('nhd_2360642'),
+      nml_out = target_name)
 
 
