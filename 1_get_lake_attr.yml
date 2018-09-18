@@ -6,6 +6,7 @@ packages:
   - lakeattributes
   - glmtools
   - mda.lakes
+  - sf
 
 file_extensions:
   - feather
@@ -13,6 +14,8 @@ file_extensions:
 
 sources:
   - 1_get_lake_attr/src/lake_attr_utils.R
+  - 1_get_lake_attr/src/feature_to_cell_coords.R
+  - 1_get_lake_attr/src/grid_utils.R
   - 1_get_lake_attr/src/create_nml_tasks.R
   - 1_get_lake_attr/src/create_nml_tasks_makefile.R
 
@@ -24,8 +27,18 @@ targets:
   1_get_lake_attr/in/feature_crosswalk.rds: # lake list from pipeline #1, lake-temperature-model-prep
     command: gd_get('1_get_lake_attr/in/feature_crosswalk.rds.ind')
 
+  1_get_lake_attr/in/lakes_sf.rds: # lake sf object from pipeline #1, lake-temperature-model-prep
+    command: gd_get('1_get_lake_attr/in/lakes_sf.rds.ind')
+
   lake_list: # list of nhd_ids for which to create nml task table
     command: lake_list(crosswalk_file = '1_get_lake_attr/in/feature_crosswalk.rds')
+
+  feature_centroids:
+    command: sf_file_centroids("1_get_lake_attr/in/lakes_sf.rds")
+
+  NLDAS_grid: # info from OPeNDAP: https://hydro1.gesdisc.eosdis.nasa.gov/dods/NLDAS_FORA0125_H.002
+    command: create_ldas_grid(x0 = I(-124.9375), y0 = I(25.0625), x_num = I(464), y_num = I(224), cell_res = I(0.125))
+
 
   nml_tasks:
     command: create_nml_tasks(lake_list)
