@@ -38,3 +38,4 @@ rsconnect/
 .remake/
 
 *.rds
+*.nml
