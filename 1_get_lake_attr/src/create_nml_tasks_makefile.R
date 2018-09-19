@@ -7,6 +7,6 @@ create_nml_tasks_makefile <- function(makefile, task_plan, remake_file){
     include = remake_file,
     packages = c('dplyr', 'scipiper', 'mda.lakes'),
     sources = c('1_get_lake_attr/src/lake_attr_utils.R'),
-    file_extensions = c('feather','ind'))
+    file_extensions = c('ind'))
 }
 

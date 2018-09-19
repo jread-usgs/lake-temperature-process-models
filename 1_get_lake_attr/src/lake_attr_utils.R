@@ -7,7 +7,7 @@ lake_list <- function(crosswalk_file){
   return(lake_list)
 }
 
-get_base_lake_nml <- function(nhd_id, nldas_x, nldas_y, ind_file) {
+get_base_lake_nml <- function(ind_file, nhd_id, nldas_x, nldas_y) {
   # change Driver file path # ****************************************
   nml <- mda.lakes::populate_base_lake_nml(site_id = nhd_id,
                                 driver = file.path('driver-data', # file path on Yeti - this may change depending on where the nml files live (I think)

@@ -50,4 +50,6 @@ targets:
 
   1_create_nmls:
     command: scmake(remake_file = I('1_nml_tasks_makefile.yml'))
+    depends:
+      - 1_nml_tasks_makefile.yml
 
