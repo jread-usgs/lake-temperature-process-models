@@ -11,6 +11,7 @@ packages:
   - dplyr
   - scipiper
   - mda.lakes
+  - lakeattributes
 
 sources:
   - 1_get_lake_attr/src/lake_attr_utils.R
