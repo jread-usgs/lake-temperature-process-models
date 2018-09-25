@@ -1,0 +1,13 @@
+version: 0.3.0
+name: 1_get_lake_attr/out/feature_nldas_coords.rds.ind
+type: file
+hash: 7b00e5e4b149379a44b15de95ab3f30f
+time: 2018-09-25 13:57:18 UTC
+depends:
+  NLDAS_grid: ee53fdcd25dd5b736694217b04c54b2a
+  feature_centroids: 22b14dd312654198fcfe55102cd2c071
+fixed: 1b5a04c1b196fc83de7cfbc13126dcdf
+code:
+  functions:
+    feature_to_cell_coords: a02124be2a4d6ac3891172eef8d5c166
+
