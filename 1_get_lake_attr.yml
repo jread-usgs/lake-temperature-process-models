@@ -36,11 +36,14 @@ targets:
   NLDAS_grid: # info from OPeNDAP: https://hydro1.gesdisc.eosdis.nasa.gov/dods/NLDAS_FORA0125_H.002
     command: create_ldas_grid(x0 = I(-124.9375), y0 = I(25.0625), x_num = I(464), y_num = I(224), cell_res = I(0.125)) # have to change this if it is changed in pipeline #1
 
-  feature_nldas_coords: # returns x,y coords of grid cell that cooresponds to each feature
-    command: feature_to_cell_coords(NLDAS_grid, feature_centroids)
+  1_get_lake_attr/out/feature_nldas_coords.rds.ind: # returns x,y coords of grid cell that cooresponds to each feature
+    command: feature_to_cell_coords(target_name, NLDAS_grid, feature_centroids)
+
+  1_get_lake_attr/out/feature_nldas_coords.rds:
+    command: gd_get('1_get_lake_attr/out/feature_nldas_coords.rds.ind')
 
   nml_tasks:
-    command: create_nml_tasks(lake_list, feature_nldas_coords)
+    command: create_nml_tasks(lake_list, '1_get_lake_attr/out/feature_nldas_coords.rds')
 
   1_nml_tasks_makefile.yml:
     command: create_nml_tasks_makefile(

@@ -1,5 +1,6 @@
 
 create_nml_tasks <- function(lake_list, feature_nldas_coords){
+  feature_nldas_coords = readRDS(feature_nldas_coords)
 
   tasks <- lake_list %>% as_tibble() %>%
     left_join(feature_nldas_coords %>%
