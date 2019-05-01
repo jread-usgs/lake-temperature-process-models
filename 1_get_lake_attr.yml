@@ -64,5 +64,5 @@ targets:
 
   # generate all the nml files by running through all the tasks
   1_get_lake_attr/out/1_nml_tasks_makefile.ind:
-    command: scmake(I('1_nml_tasks_makefile'), remake_file='1_nml_tasks_makefile.yml')
+    command: scmake(I('1_nml_tasks_makefile.ind_promise'), remake_file='1_nml_tasks_makefile.yml')
 
