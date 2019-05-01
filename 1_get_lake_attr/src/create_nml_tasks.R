@@ -18,13 +18,13 @@ create_nml_tasks <- function(lake_list, drivers_yeti_path, feature_nldas_coords)
     step_name = 'base_nml',
     target_name = function(task_name, ...){
       cur_task <- dplyr::filter(tasks, tn==task_name)
-      sprintf('1_get_lake_attr/out/glm_%s.nml.ind', task_name)
+      sprintf('1_get_lake_attr/tmp/glm_%s.nml', task_name)
     },
     command = function(task_name, ...){
       cur_task <- dplyr::filter(tasks, tn==task_name)
       psprintf(
         "get_base_lake_nml(",
-        "ind_file = target_name,",
+        "nml_file = target_name,",
         "nhd_id = I('%s')," = cur_task$tn,
         "nldas_x = I('%s')," = cur_task$nldas_coord_x,
         "nldas_y = I('%s')," = cur_task$nldas_coord_y,

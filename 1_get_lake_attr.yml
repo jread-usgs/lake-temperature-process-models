@@ -1,4 +1,4 @@
-target_default: 1_create_nmls
+target_default: 1_nml_tasks_makefile.yml
 
 packages:
   - scipiper
@@ -62,8 +62,7 @@ targets:
       task_plan = nml_tasks,
       remake_file = I('1_get_lake_attr.yml'))
 
-  1_create_nmls:
-    command: scmake(remake_file = I('1_nml_tasks_makefile.yml'))
-    depends:
-      - 1_nml_tasks_makefile.yml
+  # generate all the nml files by running through all the tasks
+  1_get_lake_attr/out/1_nml_tasks_makefile.ind:
+    command: scmake(I('1_nml_tasks_makefile'), remake_file='1_nml_tasks_makefile.yml')
 
