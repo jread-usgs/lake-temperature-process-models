@@ -1021,6 +1021,56 @@ targets:
       nldas_y = I('160'),
       drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
+  # --- nhd_1099424 --- #
+  
+  1_get_lake_attr/tmp/glm_nhd_1099424.nml:
+    command: get_base_lake_nml(
+      nml_file = target_name,
+      nhd_id = I('nhd_1099424'),
+      nldas_x = I('253'),
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
+
+  # --- nhd_1099430 --- #
+  
+  1_get_lake_attr/tmp/glm_nhd_1099430.nml:
+    command: get_base_lake_nml(
+      nml_file = target_name,
+      nhd_id = I('nhd_1099430'),
+      nldas_x = I('254'),
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
+
+  # --- nhd_1099432 --- #
+  
+  1_get_lake_attr/tmp/glm_nhd_1099432.nml:
+    command: get_base_lake_nml(
+      nml_file = target_name,
+      nhd_id = I('nhd_1099432'),
+      nldas_x = I('255'),
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
+
+  # --- nhd_1099444 --- #
+  
+  1_get_lake_attr/tmp/glm_nhd_1099444.nml:
+    command: get_base_lake_nml(
+      nml_file = target_name,
+      nhd_id = I('nhd_1099444'),
+      nldas_x = I('252'),
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
+
+  # --- nhd_1099448 --- #
+  
+  1_get_lake_attr/tmp/glm_nhd_1099448.nml:
+    command: get_base_lake_nml(
+      nml_file = target_name,
+      nhd_id = I('nhd_1099448'),
+      nldas_x = I('255'),
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
+
   # --- Overall job --- #
 
   1_nml_tasks_makefile:
@@ -1126,3 +1176,8 @@ targets:
       - 1_get_lake_attr/tmp/glm_nhd_1099390.nml
       - 1_get_lake_attr/tmp/glm_nhd_1099392.nml
       - 1_get_lake_attr/tmp/glm_nhd_1099420.nml
+      - 1_get_lake_attr/tmp/glm_nhd_1099424.nml
+      - 1_get_lake_attr/tmp/glm_nhd_1099430.nml
+      - 1_get_lake_attr/tmp/glm_nhd_1099432.nml
+      - 1_get_lake_attr/tmp/glm_nhd_1099444.nml
+      - 1_get_lake_attr/tmp/glm_nhd_1099448.nml
