@@ -27,7 +27,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10595596'),
       nldas_x = I('248'),
-      nldas_y = I('153'))
+      nldas_y = I('153'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10595598 --- #
   
@@ -36,7 +37,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10595598'),
       nldas_x = I('249'),
-      nldas_y = I('153'))
+      nldas_y = I('153'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10595604 --- #
   
@@ -45,7 +47,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10595604'),
       nldas_x = I('248'),
-      nldas_y = I('153'))
+      nldas_y = I('153'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10595608 --- #
   
@@ -54,7 +57,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10595608'),
       nldas_x = I('250'),
-      nldas_y = I('153'))
+      nldas_y = I('153'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10595614 --- #
   
@@ -63,7 +67,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10595614'),
       nldas_x = I('251'),
-      nldas_y = I('153'))
+      nldas_y = I('153'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10595644 --- #
   
@@ -72,7 +77,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10595644'),
       nldas_x = I('250'),
-      nldas_y = I('153'))
+      nldas_y = I('153'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10595674 --- #
   
@@ -81,7 +87,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10595674'),
       nldas_x = I('248'),
-      nldas_y = I('153'))
+      nldas_y = I('153'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10595690 --- #
   
@@ -90,7 +97,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10595690'),
       nldas_x = I('249'),
-      nldas_y = I('153'))
+      nldas_y = I('153'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10595748 --- #
   
@@ -99,7 +107,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10595748'),
       nldas_x = I('250'),
-      nldas_y = I('152'))
+      nldas_y = I('152'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10595756 --- #
   
@@ -108,7 +117,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10595756'),
       nldas_x = I('248'),
-      nldas_y = I('152'))
+      nldas_y = I('152'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10596422 --- #
   
@@ -117,7 +127,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10596422'),
       nldas_x = I('248'),
-      nldas_y = I('151'))
+      nldas_y = I('151'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10596430 --- #
   
@@ -126,7 +137,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10596430'),
       nldas_x = I('249'),
-      nldas_y = I('151'))
+      nldas_y = I('151'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10596440 --- #
   
@@ -135,7 +147,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10596440'),
       nldas_x = I('250'),
-      nldas_y = I('151'))
+      nldas_y = I('151'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10596466 --- #
   
@@ -144,7 +157,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10596466'),
       nldas_x = I('252'),
-      nldas_y = I('151'))
+      nldas_y = I('151'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10596486 --- #
   
@@ -153,7 +167,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10596486'),
       nldas_x = I('248'),
-      nldas_y = I('150'))
+      nldas_y = I('150'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10596500 --- #
   
@@ -162,7 +177,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10596500'),
       nldas_x = I('249'),
-      nldas_y = I('150'))
+      nldas_y = I('150'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10596502 --- #
   
@@ -171,7 +187,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10596502'),
       nldas_x = I('249'),
-      nldas_y = I('150'))
+      nldas_y = I('150'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10596552 --- #
   
@@ -180,7 +197,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10596552'),
       nldas_x = I('251'),
-      nldas_y = I('149'))
+      nldas_y = I('149'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10597308 --- #
   
@@ -189,7 +207,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10597308'),
       nldas_x = I('246'),
-      nldas_y = I('151'))
+      nldas_y = I('151'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10597310 --- #
   
@@ -198,7 +217,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10597310'),
       nldas_x = I('247'),
-      nldas_y = I('150'))
+      nldas_y = I('150'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10597314 --- #
   
@@ -207,7 +227,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10597314'),
       nldas_x = I('247'),
-      nldas_y = I('150'))
+      nldas_y = I('150'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10847960 --- #
   
@@ -216,7 +237,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10847960'),
       nldas_x = I('333'),
-      nldas_y = I('140'))
+      nldas_y = I('140'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10848066 --- #
   
@@ -225,7 +247,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10848066'),
       nldas_x = I('333'),
-      nldas_y = I('140'))
+      nldas_y = I('140'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10848220 --- #
   
@@ -234,7 +257,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10848220'),
       nldas_x = I('333'),
-      nldas_y = I('140'))
+      nldas_y = I('140'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10848298 --- #
   
@@ -243,7 +267,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10848298'),
       nldas_x = I('333'),
-      nldas_y = I('140'))
+      nldas_y = I('140'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_10848338 --- #
   
@@ -252,7 +277,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_10848338'),
       nldas_x = I('332'),
-      nldas_y = I('140'))
+      nldas_y = I('140'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1096982 --- #
   
@@ -261,7 +287,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1096982'),
       nldas_x = I('256'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1097222 --- #
   
@@ -270,7 +297,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1097222'),
       nldas_x = I('256'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1097288 --- #
   
@@ -279,7 +307,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1097288'),
       nldas_x = I('256'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1097324 --- #
   
@@ -288,7 +317,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1097324'),
       nldas_x = I('256'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1097384 --- #
   
@@ -297,7 +327,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1097384'),
       nldas_x = I('256'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1097480 --- #
   
@@ -306,7 +337,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1097480'),
       nldas_x = I('256'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098318 --- #
   
@@ -315,7 +347,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098318'),
       nldas_x = I('254'),
-      nldas_y = I('162'))
+      nldas_y = I('162'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098396 --- #
   
@@ -324,7 +357,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098396'),
       nldas_x = I('254'),
-      nldas_y = I('162'))
+      nldas_y = I('162'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098448 --- #
   
@@ -333,7 +367,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098448'),
       nldas_x = I('255'),
-      nldas_y = I('162'))
+      nldas_y = I('162'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098568 --- #
   
@@ -342,7 +377,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098568'),
       nldas_x = I('254'),
-      nldas_y = I('162'))
+      nldas_y = I('162'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098602 --- #
   
@@ -351,7 +387,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098602'),
       nldas_x = I('255'),
-      nldas_y = I('162'))
+      nldas_y = I('162'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098608 --- #
   
@@ -360,7 +397,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098608'),
       nldas_x = I('255'),
-      nldas_y = I('162'))
+      nldas_y = I('162'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098628 --- #
   
@@ -369,7 +407,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098628'),
       nldas_x = I('254'),
-      nldas_y = I('162'))
+      nldas_y = I('162'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098714 --- #
   
@@ -378,7 +417,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098714'),
       nldas_x = I('255'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098766 --- #
   
@@ -387,7 +427,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098766'),
       nldas_x = I('253'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098778 --- #
   
@@ -396,7 +437,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098778'),
       nldas_x = I('255'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098804 --- #
   
@@ -405,7 +447,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098804'),
       nldas_x = I('251'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098836 --- #
   
@@ -414,7 +457,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098836'),
       nldas_x = I('255'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098898 --- #
   
@@ -423,7 +467,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098898'),
       nldas_x = I('255'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098900 --- #
   
@@ -432,7 +477,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098900'),
       nldas_x = I('251'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098904 --- #
   
@@ -441,7 +487,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098904'),
       nldas_x = I('252'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098928 --- #
   
@@ -450,7 +497,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098928'),
       nldas_x = I('252'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098936 --- #
   
@@ -459,7 +507,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098936'),
       nldas_x = I('254'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098942 --- #
   
@@ -468,7 +517,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098942'),
       nldas_x = I('255'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098948 --- #
   
@@ -477,7 +527,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098948'),
       nldas_x = I('251'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098950 --- #
   
@@ -486,7 +537,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098950'),
       nldas_x = I('252'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098954 --- #
   
@@ -495,7 +547,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098954'),
       nldas_x = I('255'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098968 --- #
   
@@ -504,7 +557,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098968'),
       nldas_x = I('255'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098974 --- #
   
@@ -513,7 +567,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098974'),
       nldas_x = I('255'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098990 --- #
   
@@ -522,7 +577,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098990'),
       nldas_x = I('252'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1098994 --- #
   
@@ -531,7 +587,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1098994'),
       nldas_x = I('255'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099018 --- #
   
@@ -540,7 +597,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099018'),
       nldas_x = I('252'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099030 --- #
   
@@ -549,7 +607,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099030'),
       nldas_x = I('254'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099038 --- #
   
@@ -558,7 +617,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099038'),
       nldas_x = I('254'),
-      nldas_y = I('161'))
+      nldas_y = I('161'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099052 --- #
   
@@ -567,7 +627,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099052'),
       nldas_x = I('255'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099068 --- #
   
@@ -576,7 +637,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099068'),
       nldas_x = I('255'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099082 --- #
   
@@ -585,7 +647,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099082'),
       nldas_x = I('254'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099102 --- #
   
@@ -594,7 +657,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099102'),
       nldas_x = I('255'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099108 --- #
   
@@ -603,7 +667,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099108'),
       nldas_x = I('252'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099120 --- #
   
@@ -612,7 +677,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099120'),
       nldas_x = I('252'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099126 --- #
   
@@ -621,7 +687,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099126'),
       nldas_x = I('255'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099136 --- #
   
@@ -630,7 +697,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099136'),
       nldas_x = I('251'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099140 --- #
   
@@ -639,7 +707,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099140'),
       nldas_x = I('254'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099156 --- #
   
@@ -648,7 +717,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099156'),
       nldas_x = I('254'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099170 --- #
   
@@ -657,7 +727,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099170'),
       nldas_x = I('255'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099172 --- #
   
@@ -666,7 +737,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099172'),
       nldas_x = I('252'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099180 --- #
   
@@ -675,7 +747,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099180'),
       nldas_x = I('255'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099206 --- #
   
@@ -684,7 +757,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099206'),
       nldas_x = I('251'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099224 --- #
   
@@ -693,7 +767,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099224'),
       nldas_x = I('255'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099232 --- #
   
@@ -702,7 +777,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099232'),
       nldas_x = I('252'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099234 --- #
   
@@ -711,7 +787,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099234'),
       nldas_x = I('255'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099240 --- #
   
@@ -720,7 +797,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099240'),
       nldas_x = I('254'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099242 --- #
   
@@ -729,7 +807,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099242'),
       nldas_x = I('251'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099260 --- #
   
@@ -738,7 +817,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099260'),
       nldas_x = I('252'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099274 --- #
   
@@ -747,7 +827,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099274'),
       nldas_x = I('254'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099278 --- #
   
@@ -756,7 +837,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099278'),
       nldas_x = I('254'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099282 --- #
   
@@ -765,7 +847,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099282'),
       nldas_x = I('254'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099288 --- #
   
@@ -774,7 +857,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099288'),
       nldas_x = I('255'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099316 --- #
   
@@ -783,7 +867,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099316'),
       nldas_x = I('255'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099320 --- #
   
@@ -792,7 +877,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099320'),
       nldas_x = I('255'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099322 --- #
   
@@ -801,7 +887,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099322'),
       nldas_x = I('254'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099324 --- #
   
@@ -810,7 +897,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099324'),
       nldas_x = I('252'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099338 --- #
   
@@ -819,7 +907,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099338'),
       nldas_x = I('254'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099348 --- #
   
@@ -828,7 +917,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099348'),
       nldas_x = I('252'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099350 --- #
   
@@ -837,7 +927,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099350'),
       nldas_x = I('252'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099352 --- #
   
@@ -846,7 +937,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099352'),
       nldas_x = I('255'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099370 --- #
   
@@ -855,7 +947,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099370'),
       nldas_x = I('252'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099374 --- #
   
@@ -864,7 +957,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099374'),
       nldas_x = I('255'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099380 --- #
   
@@ -873,7 +967,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099380'),
       nldas_x = I('254'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099382 --- #
   
@@ -882,7 +977,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099382'),
       nldas_x = I('255'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099384 --- #
   
@@ -891,7 +987,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099384'),
       nldas_x = I('253'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099390 --- #
   
@@ -900,7 +997,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099390'),
       nldas_x = I('254'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099392 --- #
   
@@ -909,7 +1007,8 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099392'),
       nldas_x = I('252'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- nhd_1099420 --- #
   
@@ -918,12 +1017,13 @@ targets:
       ind_file = target_name,
       nhd_id = I('nhd_1099420'),
       nldas_x = I('254'),
-      nldas_y = I('160'))
+      nldas_y = I('160'),
+      drivers_yeti_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'))
 
   # --- Overall job --- #
 
   1_nml_tasks_makefile:
-    command: sc_indicate(I('1_get_lake_attr/out/1_nml_tasks_makefile.ind'))
+    command: sc_indicate(I('1_get_lake_attr/out/1_nml_tasks_makefile.ind'), hash_depends=I(TRUE), depends_target=I('1_nml_tasks_makefile'), depends_makefile=I('1_nml_tasks_makefile.yml'))
     depends: 
       - 1_get_lake_attr/out/glm_nhd_10595596.nml.ind
       - 1_get_lake_attr/out/glm_nhd_10595598.nml.ind

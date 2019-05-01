@@ -1,5 +1,5 @@
 
-create_nml_tasks <- function(lake_list, feature_nldas_coords){
+create_nml_tasks <- function(lake_list, drivers_yeti_path, feature_nldas_coords){
   feature_nldas_coords = readRDS(feature_nldas_coords)
 
   tasks <- lake_list %>% as_tibble() %>%
@@ -27,7 +27,8 @@ create_nml_tasks <- function(lake_list, feature_nldas_coords){
         "ind_file = target_name,",
         "nhd_id = I('%s')," = cur_task$tn,
         "nldas_x = I('%s')," = cur_task$nldas_coord_x,
-        "nldas_y = I('%s'))" = cur_task$nldas_coord_y)
+        "nldas_y = I('%s')," = cur_task$nldas_coord_y,
+        "drivers_yeti_path = I('%s'))" = drivers_yeti_path)
     })
 
   step_list <- list(

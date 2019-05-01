@@ -7,6 +7,7 @@ packages:
   - glmtools
   - mda.lakes
   - sf
+  - yaml
 
 file_extensions:
   - feather
@@ -18,8 +19,18 @@ sources:
   - 1_get_lake_attr/src/grid_utils.R
   - 1_get_lake_attr/src/create_nml_tasks.R
   - 1_get_lake_attr/src/create_nml_tasks_makefile.R
+  - lib/src/utils.R
 
 targets:
+
+  # read and subset the project/user settings
+  settings:
+    command: yaml.load_file('lib/cfg/settings.yml')
+  drivers_yeti_path:
+    command: settings[[I(c('drivers_yeti_path'))]]
+  drivers_time:
+    command: settings[[I(c('drivers_time'))]]
+
 
   1_get_lake_attr/in/feature_crosswalk.rds: # lake list from pipeline #1, lake-temperature-model-prep
     command: gd_get('1_get_lake_attr/in/feature_crosswalk.rds.ind')
@@ -43,7 +54,7 @@ targets:
     command: gd_get('1_get_lake_attr/out/feature_nldas_coords.rds.ind')
 
   nml_tasks:
-    command: create_nml_tasks(lake_list, '1_get_lake_attr/out/feature_nldas_coords.rds')
+    command: create_nml_tasks(lake_list, drivers_yeti_path, '1_get_lake_attr/out/feature_nldas_coords.rds')
 
   1_nml_tasks_makefile.yml:
     command: create_nml_tasks_makefile(
