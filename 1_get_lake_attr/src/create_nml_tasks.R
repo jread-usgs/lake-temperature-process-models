@@ -10,6 +10,10 @@ create_nml_tasks <- function(lake_list, feature_nldas_coords){
               by = 'site_id') %>%
     dplyr::rename(tn = site_id)
 
+  ###############
+  tasks <- tasks[1:100,]  # cutting down on length for debugging; removing this when we want to make entire nml makefile
+  ###############
+
   base_nml <- scipiper::create_task_step(
     step_name = 'base_nml',
     target_name = function(task_name, ...){
