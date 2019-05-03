@@ -67,3 +67,17 @@ yeti_put <- function(src_dir, dest_dir, files) {
   syncr::rsync(src=src_dir, dest=dest_path, files_from=tmpfile, chmod='ugo+rw')
   return(file.path(dest_dir, files))
 }
+
+#' List files in directory on Yeti (or any remote server)
+#'
+#' @param yeti_dir file path on yeti directory from which you want a list of files
+yeti_list_files <- function(yeti_dir){
+  user <- Sys.info()[['user']]
+  session <- ssh::ssh_connect(sprintf('%s@yeti.cr.usgs.gov', user))
+  files = ssh::ssh_exec_internal(session = session, command = paste('ls', yeti_dir))
+  files_out = dplyr::tibble(files = unlist(strsplit(rawToChar(files$stdout), split = '\n')))
+
+  ssh::ssh_disconnect(session = session)
+
+  return(files_out)
+}

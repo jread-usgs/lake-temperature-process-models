@@ -7,17 +7,37 @@ lake_list <- function(crosswalk_file){
   return(lake_list)
 }
 
-get_base_lake_nml <- function(nml_file, nhd_id, nldas_x, nldas_y, drivers_yeti_path) {
-  # change Driver file path # ****************************************
-  nml <- mda.lakes::populate_base_lake_nml(site_id = nhd_id,
-                                driver = file.path(drivers_yeti_path, # file path on Yeti
-                                                   paste0('NLDAS_time[0.346848]_x[',nldas_x,']_y[',nldas_y,'].csv'))) #times are all the same, but could make this an input
+#' genreate a base nml file to drive GLM run
+#' @param nml_file file path where nml file should be written
+#' @param nhd_id lake nhd_id
+#' @param nldas_x x coordinate for nldas grid
+#' @param nldas_y y coordinate for nldas grid
+#' @param drivers_yeti_path file path on USGS Yeti where driver files are held
+#' @param drivers_time
+get_base_lake_nml <- function(nml_file, nhd_id, nldas_x, nldas_y, drivers_yeti_path, drivers_time) {
 
-  # write and post the output
-  # data_file <- as_data_file(ind_file)
+  nml <- mda.lakes::populate_base_lake_nml(site_id = nhd_id,
+                                           driver = file.path(drivers_yeti_path, # file path on Yeti
+                                                              paste0('NLDAS_time[',drivers_time,']_x[',nldas_x,']_y[',nldas_y,'].csv')))
+
+  # write the output
   write_nml(glm_nml = nml, file = nml_file)
-  # gd_put(remote_ind = ind_file, local_source = data_file)
 }
+
+#' #' Get the NLDAS driver time from Yeti
+#' #' @param nldas_x x coordinate for nldas grid
+#' #' @param nldas_y y coordinate for nldas grid
+#' #' @param drivers_yeti_path file path on USGS Yeti where driver files are held
+#' get_nldas_time <- function(nldas_x, nldas_y, drivers_yeti_path){
+#'
+#'   drivers_file = yeti_list_files(yeti_dir = drivers_yeti_path)
+#'
+#'   if(sum(grepl('.ind', drivers_file$files)) >= 1){
+#'     unique_drivers_file = drivers_file$files[-grep('.ind', drivers_file$files)]
+#'   }
+#'   x_y = paste0('x[',nldas_x,']_y[',nldas_y,'].csv')
+#'   unique_drivers_file[grep(eval(x_y), unique_drivers_file, fixed = T)]
+#' }
 
 
 #' Copied from pipeline #3

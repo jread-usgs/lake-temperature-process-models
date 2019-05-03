@@ -1,0 +1,30 @@
+target_default:
+
+packages:
+  - scipiper
+  - dplyr
+  - yaml
+  - ssh
+
+file_extensions:
+  - feather
+  - ind
+
+sources:
+  - lib/src/utils.R
+  - 2_model/src/yeti_files.R
+
+targets:
+
+  settings:
+    command: yaml.load_file('lib/cfg/settings.yml')
+  drivers_yeti_path:
+    command: settings[[I(c('drivers_yeti_path'))]]
+
+  ## checking if all necessary files are on Yeti
+  2_model/out/drivers_files_on_yeti.rds.ind:
+    command: yeti_files(
+      ind_file = target_name,
+      yeti_dir = drivers_yeti_path)
+
+

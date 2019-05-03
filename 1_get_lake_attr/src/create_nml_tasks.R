@@ -1,5 +1,5 @@
 
-create_nml_tasks <- function(lake_list, drivers_yeti_path, feature_nldas_coords){
+create_nml_tasks <- function(lake_list, drivers_yeti_path, drivers_time, feature_nldas_coords){
   feature_nldas_coords = readRDS(feature_nldas_coords)
 
   tasks <- lake_list %>% as_tibble() %>%
@@ -11,7 +11,7 @@ create_nml_tasks <- function(lake_list, drivers_yeti_path, feature_nldas_coords)
     dplyr::rename(tn = site_id)
 
   ###############
-  tasks <- tasks[1:105,]  # cutting down on length for debugging; removing this when we want to make entire nml makefile
+  #tasks <- tasks[1:111,]  # cutting down on length for debugging; removing this when we want to make entire nml makefile
   ###############
 
   base_nml <- scipiper::create_task_step(
@@ -28,7 +28,8 @@ create_nml_tasks <- function(lake_list, drivers_yeti_path, feature_nldas_coords)
         "nhd_id = I('%s')," = cur_task$tn,
         "nldas_x = I('%s')," = cur_task$nldas_coord_x,
         "nldas_y = I('%s')," = cur_task$nldas_coord_y,
-        "drivers_yeti_path = I('%s'))" = drivers_yeti_path)
+        "drivers_yeti_path = I('%s')," = drivers_yeti_path,
+        "drivers_time = I('%s'))" = drivers_time)
     })
 
   step_list <- list(
