@@ -31,6 +31,8 @@ targets:
     command: settings[[I(c('drivers_yeti_path'))]]
   drivers_time:
     command: settings[[I(c('drivers_time'))]]
+  glm_inputs_yeti_path:
+    command: settings[[I(c('glm_inputs_yeti_path'))]]
 
 
   1_get_lake_attr/in/feature_crosswalk.rds: # lake list from pipeline #1, lake-temperature-model-prep
@@ -70,3 +72,11 @@ targets:
       task_makefile = '1_nml_tasks_makefile.yml',
       num_tries = 2)
 
+  local_nml_files:
+    command: list.files(I('1_get_lake_attr/tmp'))
+
+  transfer_nml_files:
+    command: yeti_put(
+      src_dir = I('1_get_lake_attr/tmp'),
+      dest_dir = glm_inputs_yeti_path,
+      files = local_nml_files)

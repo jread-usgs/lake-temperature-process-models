@@ -51,22 +51,22 @@ yeti_get <- function(src_dir, dest_dir, files) {
 #'   placed
 #' @param files vector of source filenames (no paths; should all be contained in
 #'   src_dir)
-yeti_put <- function(src_dir, dest_dir, files) {
-  user <- Sys.info()[['user']]
-  if(length(src_dir) != 1) stop('Need exactly one unique src_dir per rsync call (as implemented)')
-  dest_path <- sprintf('%s@yeti.cr.usgs.gov:%s', user, dest_dir) # the destination folder must exist on Yeti already
-
-  tmpfile <- file.path(src_dir, '_temp_rsync_file_list.txt') # must be a relative path to work on Windows
-  readr::write_lines(files, tmpfile)
-  on.exit(file.remove(tmpfile))
-  # looks like we may hit issues after first posting, may need to manually
-  # delete files from Yeti before reattempting, or maybe there's an option in
-  # rsync() that would help. Error: rsync: failed to open
-  # "/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/pgdl-inputs/nhd_1099476.npz",
-  # continuing: Permission denied (13)
-  syncr::rsync(src=src_dir, dest=dest_path, files_from=tmpfile, chmod='ugo+rw')
-  return(file.path(dest_dir, files))
-}
+# yeti_put <- function(src_dir, dest_dir, files) {
+#   user <- Sys.info()[['user']]
+#   if(length(src_dir) != 1) stop('Need exactly one unique src_dir per rsync call (as implemented)')
+#   dest_path <- sprintf('%s@yeti.cr.usgs.gov:%s', user, dest_dir) # the destination folder must exist on Yeti already
+#
+#   tmpfile <- file.path(src_dir, '_temp_rsync_file_list.txt') # must be a relative path to work on Windows
+#   readr::write_lines(files, tmpfile)
+#   on.exit(file.remove(tmpfile))
+#   # looks like we may hit issues after first posting, may need to manually
+#   # delete files from Yeti before reattempting, or maybe there's an option in
+#   # rsync() that would help. Error: rsync: failed to open
+#   # "/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/pgdl-inputs/nhd_1099476.npz",
+#   # continuing: Permission denied (13)
+#   syncr::rsync(src=src_dir, dest=dest_path, files_from=tmpfile, chmod='ugo+rw')
+#   return(file.path(dest_dir, files))
+# }
 
 #' List files in directory on Yeti (or any remote server)
 #'
@@ -80,4 +80,15 @@ yeti_list_files <- function(yeti_dir){
   ssh::ssh_disconnect(session = session)
 
   return(files_out)
+}
+
+yeti_put <- function(src_dir, dest_dir, files){
+  user <- Sys.info()[['user']]
+  session <- ssh::ssh_connect(sprintf('%s@yeti.cr.usgs.gov', user))
+
+  file_paths = sprintf('%s/%s', src_dir, files)
+
+  ssh::scp_upload(session = session, files = file_paths, to = dest_dir)
+
+  ssh::ssh_disconnect(session = session)
 }

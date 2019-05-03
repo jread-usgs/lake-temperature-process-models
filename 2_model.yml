@@ -20,6 +20,9 @@ targets:
     command: yaml.load_file('lib/cfg/settings.yml')
   drivers_yeti_path:
     command: settings[[I(c('drivers_yeti_path'))]]
+  glm_inputs_yeti_path:
+    command: settings[[I(c('glm_inputs_yeti_path'))]]
+
 
   ## checking if all necessary files are on Yeti
   2_model/out/drivers_files_on_yeti.rds.ind:
@@ -27,4 +30,7 @@ targets:
       ind_file = target_name,
       yeti_dir = drivers_yeti_path)
 
-
+  2_model/out/nml_files_on_yeti.rds.ind:
+    command: yeti_files(
+      ind_file = target_name,
+      yeti_dir = glm_inputs_yeti_path)

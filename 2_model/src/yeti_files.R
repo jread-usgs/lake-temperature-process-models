@@ -5,6 +5,8 @@ yeti_files <- function(ind_file, yeti_dir){
 
   if(sum(grepl('.ind', files$files)) >= 1){
     non_ind_files = dplyr::tibble(files = files$files[-grep('.ind', files$files)])
+  }else{
+    non_ind_files = dplyr::tibble(files = files$files)
   }
 
   data_file <- as_data_file(ind_file)
