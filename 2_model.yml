@@ -5,6 +5,8 @@ packages:
   - dplyr
   - yaml
   - ssh
+  - feather
+  - mda.lakes
 
 file_extensions:
   - feather
@@ -13,6 +15,8 @@ file_extensions:
 sources:
   - lib/src/utils.R
   - 2_model/src/yeti_files.R
+  - 2_model/src/create_glm_sim_tasks.R
+  - 2_model/src/create_glm_sim_tasks_makefile.R
 
 targets:
 
@@ -20,8 +24,18 @@ targets:
     command: yaml.load_file('lib/cfg/settings.yml')
   drivers_yeti_path:
     command: settings[[I(c('drivers_yeti_path'))]]
+  drivers_time:
+    command: settings[[I(c('drivers_time'))]]
   glm_inputs_yeti_path:
     command: settings[[I(c('glm_inputs_yeti_path'))]]
+  glm_sim_yeti_path:
+    command: settings[[I(c('glm_sim_yeti_path'))]]
+  glm_preds_yeti_path:
+    command: settings[[I(c('glm_preds_yeti_path'))]]
+  glm_summary_yeti_path:
+    command: settings[[I(c('glm_summary_yeti_path'))]]
+  depth_interval:
+    command: settings[[I(c('depth_interval'))]]
 
 
   ## checking if all necessary files are on Yeti
@@ -34,3 +48,61 @@ targets:
     command: yeti_files(
       ind_file = target_name,
       yeti_dir = glm_inputs_yeti_path)
+  2_model/out/nml_files_on_yeti.rds:
+    command: gd_get('2_model/out/nml_files_on_yeti.rds.ind')
+
+  ## need to create a makefile that holds all the glm tasks
+  glm_sim_tasks:
+    command: create_glm_sim_tasks(
+      nml_files = '2_model/out/nml_files_on_yeti.rds',
+      glm_inputs_yeti_path = glm_inputs_yeti_path,
+      drivers_yeti_path = drivers_yeti_path,
+      drivers_time = drivers_time,
+      glm_sim_yeti_path = glm_sim_yeti_path,
+      glm_preds_yeti_path = glm_preds_yeti_path,
+      glm_summary_yeti_path = glm_summary_yeti_path,
+      feature_nldas_coords = '1_get_lake_attr/out/feature_nldas_coords.rds',
+      depth_interval = depth_interval)
+
+  2_glm_sim_tasks_makefile.yml:
+    command: create_glm_sim_tasks_makefile(
+      makefile = target_name,
+      task_plan = glm_sim_tasks,
+      remake_file = I('2_model.yml'))
+
+
+  ## example run for glm ##
+#  nhd_1099478_config_path:
+#    command: I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/glm-inputs/glm_nhd_1099478.nml')
+#
+#  nhd_1099478_drivers_path:
+#    command: I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data/NLDAS_time[0.350500]_x[220]_y[155].csv')
+#
+#  nhd_1099478_preds_path:
+#    command: I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/glm-preds-jaz/glm-output')
+#
+#  nhd_1099478_summary_path:
+#    command: I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/glm-preds-jaz/glm-summary/nhd_1099478_output.feather')
+#
+#  nhd_1099478_export_depths:
+#    command: export_depths(
+#      site_id = I('nhd_1099478'),
+#      depth_interval = I(0.5))
+#
+#  glm_out_nhd_1099478.nc:
+#    command: run_glm_simulation(
+#      config_path = nhd_1099478_config_path,
+#      drivers_path = nhd_1099478_drivers_path,
+#      sim_path = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/glm-pred-jaz/.sim'),
+#      preds_path = nhd_1099478_preds_path)
+#
+#  glm_summary_nhd_1099478.feather:
+#    command: export_temp(
+#      outfile = nhd_1099478_summary_path,
+#      sim_out = I('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/glm-pred-jaz/.sim/glm_out_nhd_1099478.nc'),
+#      export_depths = export_depths)
+#
+  ###############################
+  ###############################
+  ###############################
+

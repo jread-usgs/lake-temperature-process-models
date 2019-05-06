@@ -33,7 +33,14 @@ targets:
     command: settings[[I(c('drivers_time'))]]
   glm_inputs_yeti_path:
     command: settings[[I(c('glm_inputs_yeti_path'))]]
-
+  glm_start:
+    command: settings[[I(c('glm_start'))]]
+  glm_end:
+    command: settings[[I(c('glm_end'))]]
+  dt:
+    command: settings[[I(c('dt'))]]
+  nsave:
+    command: settings[[I(c('nsave'))]]
 
   1_get_lake_attr/in/feature_crosswalk.rds: # lake list from pipeline #1, lake-temperature-model-prep
     command: gd_get('1_get_lake_attr/in/feature_crosswalk.rds.ind')
@@ -57,7 +64,15 @@ targets:
     command: gd_get('1_get_lake_attr/out/feature_nldas_coords.rds.ind')
 
   nml_tasks:
-    command: create_nml_tasks(lake_list, drivers_yeti_path, drivers_time, '1_get_lake_attr/out/feature_nldas_coords.rds')
+    command: create_nml_tasks(
+      lake_list = lake_list,
+      drivers_yeti_path = drivers_yeti_path,
+      drivers_time = drivers_time,
+      feature_nldas_coords = '1_get_lake_attr/out/feature_nldas_coords.rds',
+      glm_start = glm_start,
+      glm_end = glm_end,
+      dt = dt,
+      nsave = nsave)
 
   1_nml_tasks_makefile.yml:
     command: create_nml_tasks_makefile(

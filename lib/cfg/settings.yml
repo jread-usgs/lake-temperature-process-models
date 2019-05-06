@@ -1,5 +1,16 @@
 # file paths on Yeti
 drivers_yeti_path: '/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/driver-data'
 glm_inputs_yeti_path: '/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/glm-inputs'
-glm_preds_yeti_path: '/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/glm-preds-jaz'
+glm_sim_yeti_path: '/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/glm-pred-jaz/.sim'
+glm_preds_yeti_path: '/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/glm-preds-jaz/glm-output'
+glm_summary_yeti_path: '/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/glm-preds-jaz/glm-summary'
 drivers_time: '0.350500'
+
+# some input for glm model run - start, end, etc...
+glm_start: '1979-05-01 00:00:00' # starting when ice should be off
+glm_end: '2018-10-01 00:00:00' # drivers go up to 2019-02-05; do we want to model up through the winter too?
+dt: 3600 # model timestep (sec)
+nsave: 24
+
+# output parameters for glm simulation
+depth_interval: 0.5 # output depth interval in meters

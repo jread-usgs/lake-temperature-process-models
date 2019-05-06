@@ -14,11 +14,13 @@ lake_list <- function(crosswalk_file){
 #' @param nldas_y y coordinate for nldas grid
 #' @param drivers_yeti_path file path on USGS Yeti where driver files are held
 #' @param drivers_time
-get_base_lake_nml <- function(nml_file, nhd_id, nldas_x, nldas_y, drivers_yeti_path, drivers_time) {
+get_base_lake_nml <- function(nml_file, nhd_id, nldas_x, nldas_y, drivers_yeti_path, drivers_time, ...) {
 
   nml <- mda.lakes::populate_base_lake_nml(site_id = nhd_id,
                                            driver = file.path(drivers_yeti_path, # file path on Yeti
                                                               paste0('NLDAS_time[',drivers_time,']_x[',nldas_x,']_y[',nldas_y,'].csv')))
+
+  nml <- set_nml(nml, arg_list = list(...))
 
   # write the output
   write_nml(glm_nml = nml, file = nml_file)
