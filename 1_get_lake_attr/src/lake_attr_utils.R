@@ -9,18 +9,21 @@ lake_list <- function(crosswalk_file){
 
 #' genreate a base nml file to drive GLM run
 #' @param nml_file file path where nml file should be written
-#' @param nhd_id lake nhd_id
+#' @param site_id lake site_id (e.g. nhd_id, mglp_id)
 #' @param nldas_x x coordinate for nldas grid
 #' @param nldas_y y coordinate for nldas grid
 #' @param drivers_yeti_path file path on USGS Yeti where driver files are held
 #' @param drivers_time
-get_base_lake_nml <- function(nml_file, nhd_id, nldas_x, nldas_y, drivers_yeti_path, drivers_time, ...) {
+get_base_lake_nml <- function(nml_file, site_id, nldas_x, nldas_y, drivers_yeti_path, drivers_time, start, stop, dt, nsave) {
 
-  nml <- mda.lakes::populate_base_lake_nml(site_id = nhd_id,
+  nml <- mda.lakes::populate_base_lake_nml(site_id = site_id,
                                            driver = file.path(drivers_yeti_path, # file path on Yeti
                                                               paste0('NLDAS_time[',drivers_time,']_x[',nldas_x,']_y[',nldas_y,'].csv')))
 
-  nml <- set_nml(nml, arg_list = list(...))
+  nml <- set_nml(nml, arg_list = list(start = start,
+                                      stop = stop,
+                                      dt = dt,
+                                      nsave = nsave))
 
   # write the output
   write_nml(glm_nml = nml, file = nml_file)

@@ -13,7 +13,7 @@ If any of these files are changed / updated in this pipeline, remember to:
   2. copy the updated .ind file to the dependent pipeline's github repository (which is also hyperlinked above)
 
 
-This project uses rsync and ssh to pull data/predictions from Yeti in the 1_format phase. For this to work, SSH keys must be set up for communication with Yeti:
+This project uses rsync and ssh to pull/push data/predictions from Yeti in the `1_get_lake_attr` and `2_model` phase. For this to work, SSH keys must be set up for communication with Yeti:
 
   -  If you don't yet have a local ssh key pair, use `ssh-keygen -t rsa` from within a local terminal.
   -  Copy the public key to Yeti with `ssh-copy-id username@yeti.cr.usgs.gov` (also from within your local terminal). You can then check that you're set up by running `ssh username@yeti.cr.usgs.gov` from a terminal - it should log you in without a password.
