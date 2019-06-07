@@ -27,17 +27,17 @@ get_site_ids <- function(file) {
 #'   on Windows).
 #' @param files vector of source filenames (no paths; should all be contained in
 #'   src_dir)
-yeti_get <- function(src_dir, dest_dir, files) {
-  user <- Sys.info()[['user']]
-  if(length(src_dir) != 1) stop('Need exactly one unique src_dir per rsync call (as implemented)')
-  src_path <- sprintf('%s@yeti.cr.usgs.gov:%s', user, src_dir)
-  if(!dir.exists(dest_dir)) dir.create(dest_dir, recursive=TRUE)
-  tmpfile <- file.path(dest_dir, '_temp_rsync_file_list.txt') # must be a relative path to work on Windows
-  readr::write_lines(files, tmpfile)
-  on.exit(file.remove(tmpfile))
-  syncr::rsync(src=src_path, dest=dest_dir, files_from=tmpfile)
-  return(file.path(dest_dir, files))
-}
+# yeti_get <- function(src_dir, dest_dir, files) {
+#   user <- Sys.info()[['user']]
+#   if(length(src_dir) != 1) stop('Need exactly one unique src_dir per rsync call (as implemented)')
+#   src_path <- sprintf('%s@yeti.cr.usgs.gov:%s', user, src_dir)
+#   if(!dir.exists(dest_dir)) dir.create(dest_dir, recursive=TRUE)
+#   tmpfile <- file.path(dest_dir, '_temp_rsync_file_list.txt') # must be a relative path to work on Windows
+#   readr::write_lines(files, tmpfile)
+#   on.exit(file.remove(tmpfile))
+#   syncr::rsync(src=src_path, dest=dest_dir, files_from=tmpfile)
+#   return(file.path(dest_dir, files))
+# }
 
 #' Uses rsync and ssh to push a list of files to Yeti
 #'
