@@ -82,13 +82,24 @@ yeti_list_files <- function(yeti_dir){
   return(files_out)
 }
 
-yeti_put <- function(src_dir, dest_dir, files){
+yeti_put <- function(yeti_dir, dest_dir, files){
   user <- Sys.info()[['user']]
   session <- ssh::ssh_connect(sprintf('%s@yeti.cr.usgs.gov', user))
 
-  file_paths = sprintf('%s/%s', src_dir, files)
+  file_paths = sprintf('%s/%s', yeti_dir, files)
 
   ssh::scp_upload(session = session, files = file_paths, to = dest_dir)
+
+  ssh::ssh_disconnect(session = session)
+}
+
+yeti_get <- function(yeti_dir, dest_dir, files){
+  user <- Sys.info()[['user']]
+  session <- ssh::ssh_connect(sprintf('%s@yeti.cr.usgs.gov', user))
+
+  file_paths = sprintf('%s/%s', yeti_dir, files)
+
+  ssh::scp_download(session = session, files = file_paths, to = dest_dir)
 
   ssh::ssh_disconnect(session = session)
 }
