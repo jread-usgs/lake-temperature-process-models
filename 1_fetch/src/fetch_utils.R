@@ -8,7 +8,8 @@ build_nml_list <- function(H_A_file, cd_file, lat_lon_file, len_wid_file, lake_d
     inner_join(readRDS(lake_depth_file), by = 'site_id') %>%
     inner_join(readRDS(layer_thick_file), by = 'site_id') %>%
     inner_join(readRDS(meteo_fl_file), by = 'site_id') %>%
-    inner_join(readRDS(kw_file), by = 'site_id')
+    inner_join(readRDS(kw_file), by = 'site_id') %>%
+    filter(file.exists(file.path('../lake-temperature-model-prep/7_drivers_munge/out', meteo_fl)))
 
   # now note the H_A_file is a list()
   nml_list <- split(nml_df_data, seq(nrow(nml_df_data))) %>% setNames(nml_df_data$site_id)
