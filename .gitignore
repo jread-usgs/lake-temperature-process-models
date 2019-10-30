@@ -40,4 +40,6 @@ rsconnect/
 *.rds
 *.nml
 *.csv
+*tasks_makefile.yml
+tmp_missing_lakes.R
 
