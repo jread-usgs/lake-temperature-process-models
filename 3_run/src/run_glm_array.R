@@ -3,10 +3,10 @@
 # for single GLM PB0 jobs (no calibration), we'll get a list where each list element contains n lake jobs to run
 list(
   data.frame(
-    sim_id = c('pb0_nhdhr_123123','pb0_nhdhr_1252342'),
-    nml_file = c('2_prep/sync/nhdhr_123123.nml', '2_prep/sync/nhdhr_1252342.nml'),
-    meteo_file = c('2_prep/sync/NLDAS_time[0.351500]_x[309]_y[127].csv', '2_prep/sync/NLDAS_time[0.351500]_x[312]_y[130].csv'),
-    export_file = c('3_run/sync/pb0_nhdhr_123123_temperatures.feather', '3_run/sync/pb0_nhdhr_1252342_temperatures.feather')),
+    sim_id = c('pb0_nhdhr_166868607','pb0_nhdhr_166868799'),
+    nml_file = c('2_prep/sync/nhdhr_166868607.nml', '2_prep/sync/nhdhr_166868799.nml'),
+    meteo_file = c('2_prep/sync/NLDAS_time[0.351500]_x[225]_y[159].csv', '2_prep/sync/NLDAS_time[0.351500]_x[226]_y[158].csv'),
+    export_file = c('3_run/sync/pb0_nhdhr_1668686073_temperatures.feather', '3_run/sync/pb0_nhdhr_166868799_temperatures.feather')),
   data.frame(
     sim_id = c('pb0_nhdhr_123423','pb0_nhdhr_1257342'),
     nml_file = c('2_prep/sync/nhdhr_123423.nml', '2_prep/sync/nhdhr_1257342.nml'),

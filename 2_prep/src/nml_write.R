@@ -3,8 +3,10 @@
 write_nml_files <- function(fileout, nml_list, base_nml){
   nml_base <- read_nml("../ms-pgdl-wrr/fig_3/yeti_sync/nhd_4250586_nml.nml")
 
-  site_ids <- names(nml_list)[1:10]
-  files_out <- file.path('2_prep/sync', paste0(site_ids, '.nml'))
+  site_ids <- names(nml_list)
+
+  sync_dir <- '2_prep/sync'
+  files_out <- file.path(sync_dir , paste0(site_ids, '.nml'))
 
   for (i in 1:length(site_ids)){
     site_id <- site_ids[i]
@@ -27,8 +29,7 @@ write_nml_files <- function(fileout, nml_list, base_nml){
     # write nml here
   }
   sc_indicate(fileout, data_file = files_out)
-  #browser()
-  #dest_dir <- file.path('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models', dirname(files_out))
-  #yeti_put(dest_dir = '/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models/', local_dir = '.', files = files_out)
+  dest_dir <- file.path('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models', sync_dir )
+  yeti_put(dest_dir = dest_dir, local_dir = sync_dir, files = basename(files_out))
 }
 
