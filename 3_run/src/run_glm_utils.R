@@ -9,7 +9,7 @@ run_glm <- function(sim_dir, nml_obj, export_file = NULL){
   nc_path <- file.path(sim_dir, out_dir, out_file)
 
   if (!is.null(export_file)){
-    export_temp(filepath = export_file, nml_obj, nc_filepath)
+    export_temp(filepath = export_file, nml_obj, nc_filepath = nc_path)
   }
   invisible(nc_path)
 }
