@@ -1,4 +1,4 @@
-target_default: 1_create_nmls
+target_default: 1_nml_tasks_makefile.yml
 
 packages:
   - scipiper
@@ -7,6 +7,8 @@ packages:
   - glmtools
   - mda.lakes
   - sf
+  - yaml
+  - ssh
 
 file_extensions:
   - feather
@@ -18,8 +20,27 @@ sources:
   - 1_get_lake_attr/src/grid_utils.R
   - 1_get_lake_attr/src/create_nml_tasks.R
   - 1_get_lake_attr/src/create_nml_tasks_makefile.R
+  - lib/src/utils.R
 
 targets:
+
+  # read and subset the project/user settings
+  settings:
+    command: yaml.load_file('lib/cfg/settings.yml')
+  drivers_yeti_path:
+    command: settings[[I(c('drivers_yeti_path'))]]
+  drivers_time:
+    command: settings[[I(c('drivers_time'))]]
+  glm_inputs_yeti_path:
+    command: settings[[I(c('glm_inputs_yeti_path'))]]
+  glm_start:
+    command: settings[[I(c('glm_start'))]]
+  glm_end:
+    command: settings[[I(c('glm_end'))]]
+  dt:
+    command: settings[[I(c('dt'))]]
+  nsave:
+    command: settings[[I(c('nsave'))]]
 
   1_get_lake_attr/in/feature_crosswalk.rds: # lake list from pipeline #1, lake-temperature-model-prep
     command: gd_get('1_get_lake_attr/in/feature_crosswalk.rds.ind')
@@ -43,7 +64,15 @@ targets:
     command: gd_get('1_get_lake_attr/out/feature_nldas_coords.rds.ind')
 
   nml_tasks:
-    command: create_nml_tasks(lake_list, '1_get_lake_attr/out/feature_nldas_coords.rds')
+    command: create_nml_tasks(
+      lake_list = lake_list,
+      drivers_yeti_path = drivers_yeti_path,
+      drivers_time = drivers_time,
+      feature_nldas_coords = '1_get_lake_attr/out/feature_nldas_coords.rds',
+      glm_start = glm_start,
+      glm_end = glm_end,
+      dt = dt,
+      nsave = nsave)
 
   1_nml_tasks_makefile.yml:
     command: create_nml_tasks_makefile(
@@ -51,8 +80,18 @@ targets:
       task_plan = nml_tasks,
       remake_file = I('1_get_lake_attr.yml'))
 
-  1_create_nmls:
-    command: scmake(remake_file = I('1_nml_tasks_makefile.yml'))
-    depends:
-      - 1_nml_tasks_makefile.yml
+  # generate all the nml files by running through all the tasks
+  loop_through_tasks:
+    command: loop_tasks(
+      task_plan = nml_tasks,
+      task_makefile = '1_nml_tasks_makefile.yml',
+      num_tries = 2)
 
+  local_nml_files:
+    command: list.files(I('1_get_lake_attr/tmp'))
+
+  transfer_nml_files:
+    command: yeti_put(
+      src_dir = I('1_get_lake_attr/tmp'),
+      dest_dir = glm_inputs_yeti_path,
+      files = local_nml_files)
