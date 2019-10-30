@@ -1,0 +1,26 @@
+
+
+target_default: 2_prep
+
+include:
+  - 1_fetch.yml
+
+packages:
+  - scipiper
+  - dplyr
+  - glmtools
+
+sources:
+  - 2_prep/src/nml_write.R
+  - 2_prep/src/driver_utils.R
+  - 2_prep/src/yeti_job_utils.R
+
+targets:
+  2_prep:
+    depends:
+      - 2_prep/out/nml_file_group.yml
+
+
+
+  2_prep/out/nml_file_group.yml:
+    command: write_nml_files(target_name, nml_list)

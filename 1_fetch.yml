@@ -1,0 +1,32 @@
+
+
+target_default: 1_fetch
+
+packages:
+  - scipiper
+  - dplyr
+
+sources:
+  - 1_fetch/src/fetch_utils.R
+
+targets:
+  1_fetch:
+    depends:
+      - nml_list
+      - model_ids
+
+
+  nml_list:
+    command: build_nml_list(
+      "../lake-temperature-model-prep/7_config_merge/out/nml_H_A_values.rds",
+      "../lake-temperature-model-prep/7_config_merge/out/nml_cd_values.rds",
+      "../lake-temperature-model-prep/7_config_merge/out/nml_lat_lon_values.rds",
+      "../lake-temperature-model-prep/7_config_merge/out/nml_len_wid_values.rds",
+      "../lake-temperature-model-prep/7_config_merge/out/nml_lake_depth_values.rds",
+      "../lake-temperature-model-prep/7_config_merge/out/nml_layer_thick_values.rds",
+      "../lake-temperature-model-prep/7_config_merge/out/nml_meteo_fl_values.rds",
+      "../lake-temperature-model-prep/7_config_merge/out/nml_Kw_values.rds")
+
+  # note that including Kw drops modeled lakes from 13,384 to 6,922
+  model_ids:
+    command: names(nml_list)
