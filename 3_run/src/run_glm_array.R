@@ -1,7 +1,7 @@
 
 
 # for single GLM PB0 jobs (no calibration), we'll get a list where each list element contains n lake jobs to run
-list(
+all_jobs <- list(
   data.frame(
     sim_id = c('pb0_nhdhr_166868607','pb0_nhdhr_166868799'),
     nml_file = c('2_prep/sync/nhdhr_166868607.nml', '2_prep/sync/nhdhr_166868799.nml'),
@@ -24,6 +24,8 @@ if(is.na(task_id)){
 
 all_jobs <- readRDS('2_prep/out/glm_pb0_array.rds')
 source('3_run/src/run_glm_utils.R')
+source('3_run/src/export_utils.R')
+
 
 these_jobs <- all_jobs[[task_id]]
 
