@@ -1,9 +1,10 @@
 target_default: all
 
 include:
-  - 1_get_lake_attr.yml
+  - 2_prep.yml
 
 targets:
   all:
     depends:
-      - 1_get_lake_attr
+      - 1_fetch
+      - 2_prep
