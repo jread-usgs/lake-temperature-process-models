@@ -22,7 +22,7 @@ if(is.na(task_id)){
   stop("ERROR Can not read task_id, NA returned")
 }
 
-all_jobs <- readRDS('2_prep/out/glm_pb0_array.rds')
+all_jobs <- readRDS('2_prep/out/glm_pb0_fails_array.rds')
 source('3_run/src/run_glm_utils.R')
 source('3_run/src/export_utils.R')
 
