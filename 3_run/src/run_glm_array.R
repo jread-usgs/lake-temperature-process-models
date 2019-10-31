@@ -37,7 +37,7 @@ for (j in 1:nrow(these_jobs)){
   base_meteo <- this_job$meteo_file
   # write the file to here:
   meteo_filepath <- file.path(sim_dir, paste0(this_job$sim_id, '.csv'))
-  nml_obj <- set_nml(nml_obj, arg_name = 'meteo_fl', basename(meteo_filepath))
+  nml_obj <- glmtools::set_nml(nml_obj, arg_name = 'meteo_fl', basename(meteo_filepath))
   meteo_data <- readr::read_csv(base_meteo)
   readr::write_csv(driver_add_rain(meteo_data), path = meteo_filepath)
   tryCatch({
