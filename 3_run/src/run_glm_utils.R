@@ -13,3 +13,20 @@ run_glm <- function(sim_dir, nml_obj, export_file = NULL){
   }
   invisible(nc_path)
 }
+
+
+driver_add_rain <- function(drivers, months=7:9, rain_add=1){
+
+  d_month = as.POSIXlt(drivers$time)$mon + 1
+  d_year  = as.POSIXlt(drivers$time)$year + 1900
+
+  indx    = d_month %in% months
+  n_years = length(unique(d_year[indx]))
+  n_days  = sum(indx)
+
+  per_day = (rain_add * n_years)/n_days
+
+  drivers[indx,]$Rain = drivers[indx,]$Rain + per_day
+
+  return(drivers)
+}

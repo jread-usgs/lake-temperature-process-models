@@ -34,9 +34,16 @@ for (j in 1:nrow(these_jobs)){
   sim_dir <- file.path(Sys.getenv('LOCAL_SCRATCH', unset="sim-scratch"), this_job$sim_id)
   dir.create(sim_dir, recursive = TRUE)
   nml_obj <- glmtools::read_nml(this_job$nml_file)
-  meteo_filepath <- file.path(sim_dir, glmtools::get_nml_value(nml_obj, 'meteo_fl'))
-  file.copy(this_job$meteo_file, to = meteo_filepath)
-  run_glm(sim_dir, nml_obj, export_file = this_job$export_file)
+  base_meteo <- this_job$meteo_file
+  # write the file to here:
+  meteo_filepath <- file.path(sim_dir, paste0(this_job$sim_id, '.csv'))
+  nml_obj <- set_nml(nml_obj, arg_name = 'meteo_fl', basename(meteo_filepath))
+  meteo_data <- readr::read_csv(base_meteo)
+  readr::write_csv(driver_add_rain(meteo_data), path = meteo_filepath)
+  tryCatch({
+    run_glm(sim_dir, nml_obj, export_file = this_job$export_file)
+  })
+
   unlink(sim_dir, recursive = TRUE)
 }
 
