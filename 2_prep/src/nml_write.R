@@ -15,7 +15,7 @@ write_nml_files <- function(fileout, nml_list, base_nml){
     nml_args$site_id <- NULL
 
     nml_args$sw_factor = 1
-    nml_args$start = '1980-04-01'
+    nml_args$start = '1979-04-01'
     nml_args$stop = '2018-12-31'
     nml_args$dt=3600
 
