@@ -1,7 +1,6 @@
 
 build_nml_list <- function(H_A_file, cd_file, lat_lon_file, len_wid_file, lake_depth_file, layer_thick_file, meteo_fl_file, kw_file){
 
-
   nml_df_data <- readRDS(cd_file) %>%
     inner_join(readRDS(lat_lon_file), by = 'site_id') %>%
     inner_join(readRDS(len_wid_file), by = 'site_id') %>%
