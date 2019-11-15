@@ -25,3 +25,126 @@ sync_drivers <- function(fileout, nml_list){
   dest_dir <- file.path('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models', sync_dir )
   yeti_put(dest_dir = dest_dir, local_dir = sync_dir, files = nml_meteo_files)
 }
+
+
+build_pb0_job_list <- function(fileout, nml_list, job_chunk = 40, temperature_file){
+
+  # all_jobs <- list(
+  #   data.frame(
+  #     sim_id = c('pb0_nhdhr_166868607','pb0_nhdhr_166868799'),
+  #     nml_file = c('2_prep/sync/nhdhr_166868607.nml', '2_prep/sync/nhdhr_166868799.nml'),
+  #     meteo_file = c('2_prep/sync/NLDAS_time[0.351500]_x[225]_y[159].csv', '2_prep/sync/NLDAS_time[0.351500]_x[226]_y[158].csv'),
+  #     export_file = c('3_run/sync/pb0_nhdhr_1668686073_temperatures.feather', '3_run/sync/pb0_nhdhr_166868799_temperatures.feather'),
+  #     stringsAsFactors = FALSE),
+  #   data.frame(
+  #     sim_id = c('pb0_nhdhr_123423','pb0_nhdhr_1257342'),
+  #     nml_file = c('2_prep/sync/nhdhr_123423.nml', '2_prep/sync/nhdhr_1257342.nml'),
+  #     meteo_file = c('2_prep/sync/NLDAS_time[0.351500]_x[307]_y[122].csv', '2_prep/sync/NLDAS_time[0.351500]_x[311]_y[136].csv'),
+  #     export_file = c('3_run/sync/pb0_nhdhr_123423_temperatures.feather', '3_run/sync/pb0_nhdhr_1257342_temperatures.feather'),
+  #     stringsAsFactors = FALSE)
+  # )
+
+  sim_ids <- read_feather(temperature_file) %>% rename(site_id = nhdhr_id) %>%
+    left_join(data.frame(site_id = names(nml_list), stringsAsFactors = FALSE), .) %>% group_by(site_id) %>%
+    summarize(n = length(unique(date))) %>% arrange(desc(n)) %>% pull(site_id)
+
+  build_job_list(sim_ids, job_chunk = job_chunk, nml_list) %>%
+    saveRDS(fileout)
+
+}
+
+build_job_list <- function(sim_ids, job_chunk, nml_list){
+  start_idx <- seq(1, to = length(sim_ids), by = job_chunk)
+  end_idx <- c(tail(start_idx - 1, -1), length(sim_ids))
+  all_jobs <- list()
+  for (i in 1:length(start_idx)){
+    all_jobs[[i]] <- data.frame(stringsAsFactors = FALSE,
+                                sim_id = paste0('pb0_', sim_ids[start_idx[i]:end_idx[i]]),
+                                nml_file = paste0('2_prep/sync/', sim_ids[start_idx[i]:end_idx[i]], '.nml'),
+                                meteo_file = paste0('2_prep/sync/', sapply(start_idx[i]:end_idx[i], FUN = function(x) nml_list[[x]]$meteo_fl)),
+                                export_file = paste0('3_run/sync/pb0_', sim_ids[start_idx[i]:end_idx[i]], '_temperatures.feather'))
+  }
+  return(all_jobs)
+}
+
+failed_array_jobs <- function(fileout, old_jobs, job_chunk, nml_list, dummy){
+  old_jobs <- readRDS(old_jobs)
+  files_done <- dir('3_run/sync')
+  ids_done <- files_done %>% stringr::str_remove('pb0_') %>% stringr::str_remove("_temperatures.feather")
+
+  all_ids <- sapply(old_jobs, function(x) c(str_remove(x$sim_id, 'pb0_'))) %>% unlist() %>% as.vector()
+  failed_ids <- all_ids[!all_ids %in% ids_done]
+  build_job_list(failed_ids, job_chunk = job_chunk, nml_list) %>%
+    saveRDS(fileout)
+}
+
+remove_wrr <- function(temp_feather){
+  files_done <- dir('3_run/sync')
+  ids_done <- files_done %>% stringr::str_remove('pb0_') %>% stringr::str_remove("_temperatures.feather")
+  wrr_ids <- dir('../ms-pgdl-wrr/data_release/out/') %>% stringr::str_extract('nhd_[0-9]+') %>% na.omit() %>% as.character()
+  winslow_xwalk <- readRDS('../lake-temperature-model-prep/2_crosswalk_munge/out/winslow_nhdhr_xwalk.rds')
+  wrr_nhdhr <- winslow_xwalk %>% filter(WINSLOW_ID %in% wrr_ids)
+  files_done[!ids_done %in% wrr_nhdhr$site_id & ids_done %in% read_feather(temp_feather)$nhdhr_id]
+}
+
+zip_glm_out <- function(zip_filepath, files){
+
+  cd <- getwd()
+  on.exit(setwd(cd))
+  setwd('3_run/sync')
+  zip(file.path('../out', basename(zip_filepath)), files)
+  setwd(cd)
+}
+
+zip_meteo <- function(zip_filepath, pb0_files, nml_list){
+  pb0_ids <- pb0_files %>% stringr::str_remove('pb0_') %>% stringr::str_remove("_temperatures.feather")
+
+  meteo_files <- sapply(pb0_ids, function(x) nml_list[[x]]$meteo_fl, USE.NAMES = FALSE) %>% unlist %>% unique()
+  cd <- getwd()
+  on.exit(setwd(cd))
+  setwd('2_prep/sync')
+  zip(file.path('../../3_run/out', basename(zip_filepath)), meteo_files)
+  setwd(cd)
+}
+
+mapping_nldas_nhdhr <- function(filepath, pb0_files, nml_list){
+  pb0_ids <- pb0_files %>% stringr::str_remove('pb0_') %>% stringr::str_remove("_temperatures.feather")
+
+  meteos <- sapply(pb0_ids, function(x) nml_list[[x]]$meteo_fl, USE.NAMES = T)
+  meteos <- meteos[!sapply(meteos, is.null)]
+
+  mapping <- data.frame(site_id = names(meteos),
+                        meteo_file = unlist(meteos) %>% unname(),
+                        stringsAsFactors = FALSE)
+  feather::write_feather(mapping, filepath)
+}
+
+subset_temperature <- function(filepath, pb0_files, temp_feather){
+  pb0_ids <- pb0_files %>% stringr::str_remove('pb0_') %>% stringr::str_remove("_temperatures.feather")
+
+  temperatures <- read_feather(temp_feather) %>%
+    filter(nhdhr_id %in% pb0_ids)
+
+  ids_m_100 <- temperatures %>% group_by(nhdhr_id) %>% summarize(n = length(unique(date))) %>%
+    filter(n >= 100) %>% pull(nhdhr_id) %>% unique()
+
+  temperatures %>% filter(nhdhr_id %in% ids_m_100) %>% write_feather(filepath)
+}
+
+
+extract_metadata <- function(filepath, pb0_files, nml_list, area_file){
+  pb0_ids <- pb0_files %>% stringr::str_remove('pb0_') %>% stringr::str_remove("_temperatures.feather")
+  areas <- readRDS(area_file)
+
+  # want nhd_id	surface area	max depth	latitude	longitude	K_d
+
+  purrr::map(pb0_ids, .f = function(x){
+    data.frame(site_id = x,
+               surface_area = filter(areas, site_id == !!x) %>% pull(areas_m2),
+               max_depth = nml_list[[x]]$lake_depth,
+               latitude = nml_list[[x]]$latitude,
+               longitude = nml_list[[x]]$longitude,
+               K_d = nml_list[[x]]$Kw, stringsAsFactors = FALSE)
+  }) %>% purrr::reduce(rbind) %>% feather::write_feather(filepath)
+
+}
