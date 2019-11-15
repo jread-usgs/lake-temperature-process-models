@@ -63,6 +63,7 @@ This project uses rsync and ssh to pull/push data/predictions from Yeti in the `
   -  On Windows with RStudio, there will be a problem in that SSH/rsync assume your `.ssh` folder is at `~/.ssh`, but `~` means `C:/Users/username` within a terminal but `C:/Users/username/Documents` within RStudio. Therefore you should create a symlink for the `.ssh` folder by calling `ln -s ~/.ssh ~/Documents/.ssh` in a bash shell.
 
 
+
 ### my workflow
 I build things locally and some (not all) sync to Yeti as part of the process. 
 Seems rsync is faster than the cross-platform ssh package
