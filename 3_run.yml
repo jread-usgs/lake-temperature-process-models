@@ -24,7 +24,7 @@ targets:
 
   2_prep/out/glm_pb0_array.rds:
     command: build_pb0_job_list(target_name, nml_list, job_chunk = I(20),
-      temperature_file = '~/Downloads/SAM_merged_temp_data_daily.feather')
+      temperature_file = '../lake-temperature-model-prep/7b_temp_merge/out/merged_temp_data_daily.feather')
 
   2_prep/out/glm_pb0_fails_array.rds:
     command: failed_array_jobs(target_name, '2_prep/out/glm_pb0_array.rds', job_chunk = I(1), nml_list, dummy = I('2019-11-02'))
@@ -42,7 +42,7 @@ targets:
     command: mapping_nldas_nhdhr(target_name, files_to_zip, nml_list)
 
   3_run/out/temperature_obs.feather:
-    command: subset_temperature(target_name, files_to_zip, '~/Downloads/SAM_merged_temp_data_daily.feather')
+    command: subset_temperature(target_name, files_to_zip, '../lake-temperature-model-prep/7b_temp_merge/out/merged_temp_data_daily.feather')
 
   3_run/out/lake_metadata.feather:
     command: extract_metadata(target_name, files_to_zip, nml_list, "../lake-temperature-model-prep/7_config_merge/out/canonical_lakes_area.rds")

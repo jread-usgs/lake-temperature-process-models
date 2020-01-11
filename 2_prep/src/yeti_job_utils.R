@@ -44,7 +44,7 @@ build_pb0_job_list <- function(fileout, nml_list, job_chunk = 40, temperature_fi
   #     stringsAsFactors = FALSE)
   # )
 
-  sim_ids <- read_feather(temperature_file) %>% rename(site_id = nhdhr_id) %>%
+  sim_ids <- read_feather(temperature_file) %>%
     left_join(data.frame(site_id = names(nml_list), stringsAsFactors = FALSE), .) %>% group_by(site_id) %>%
     summarize(n = length(unique(date))) %>% arrange(desc(n)) %>% pull(site_id)
 
