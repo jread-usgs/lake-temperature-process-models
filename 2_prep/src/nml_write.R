@@ -1,7 +1,8 @@
 
-
+#' @param base_nml an nml file to use as a starting point
 write_nml_files <- function(fileout, nml_list, base_nml){
-  nml_base <- read_nml("../ms-pgdl-wrr/fig_3/yeti_sync/nhd_4250586_nml.nml")
+
+  nml_base <- read_nml(base_nml)
 
   site_ids <- names(nml_list)
 
@@ -9,14 +10,16 @@ write_nml_files <- function(fileout, nml_list, base_nml){
   files_out <- file.path(sync_dir , paste0(site_ids, '.nml'))
 
   for (i in 1:length(site_ids)){
+
     site_id <- site_ids[i]
     nml_args <- nml_list[[site_id]]
+    nml_args$lake_name <- nml_args$site_id
     nml_args$sim_name <- nml_args$site_id
     nml_args$site_id <- NULL
 
     nml_args$sw_factor = 1
     nml_args$start = '1979-04-01'
-    nml_args$stop = '2018-12-31'
+    nml_args$stop = '2019-12-31'
     nml_args$dt=3600
 
     nml_args$bsn_vals = length(nml_args$H)
