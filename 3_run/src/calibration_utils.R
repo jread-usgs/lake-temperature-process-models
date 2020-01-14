@@ -18,17 +18,43 @@ run_glm_cal <- function(nml_file, sim_dir, cal_params = c('cd','Kw','coef_wind_s
     })
 
   # use optim to pass in params, parscale, calibration_fun, compare_file, sim_dir
-  out <- optim(fn = run_eval_glm, par=cal_starts, control=list(parscale=parscale),
+  out <- optim(fn = set_eval_glm, par=cal_starts, control=list(parscale=parscale),
                caldata_fl = caldata_fl, sim_dir = sim_dir, nml_obj = nml_obj)
 
-  results <- data.frame(as.list(out$par), train_rmse = out$value)
-  # within cal function, set_nml using params from optim, write nml
-  # run model, verify legit sim and calculate/return calibration RSME, otherwise return 10 or 999 (something high)
-  # optim returns $par for final params and $value for final RMSE; store these and/or write the whole modified nml
+  nlm_obj <- glmtools::set_nml(nml_obj, arg_list = as.list(out$par))
+
+  # write the rmse and other details into a new block in the nml "results"
+  nml_obj$results <- list(rmse = out$value,
+                          sim_time = format(Sys.time(), '%Y-%m-%d %H:%M'),
+                          cal_params = cal_params,
+                          cal_parscale = parscale)
 
   return(nml_obj)
 }
 
-set_eval_glm <- function(){
+set_eval_glm <- function(par, caldata_fl, sim_dir, nml_obj){
+  # set params, run model, check valid, calc rmse
+  nlm_obj <- glmtools::set_nml(nml_obj, arg_list = as.list(par))
 
+  sim_fl <- file.path(sim_dir, 'output.nc')
+
+  # run model, verify legit sim and calculate/return calibration RSME, otherwise return 10 or 999 (something high)
+  rmse = tryCatch({
+
+    # from "run_glm_utils.R"
+    run_glm(sim_dir, nml_obj)
+    last_time <- glmtools::get_var(sim_fl, 'wind') %>%
+      tail(1) %>% pull(DateTime)
+
+    if (last_time < as.Date(as.Date(get_nml_value(nml_obj, "stop")))){
+      stop('incomplete sim, ended on ', last_time)
+    }
+
+    rmse <- glmtools::compare_to_field(sim_fl, field_file = caldata_fl,
+                                       metric = 'water.temperature')
+  }, error = function(e){
+    return(99) # a high RMSE value
+  })
+
+  return(rmse)
 }
