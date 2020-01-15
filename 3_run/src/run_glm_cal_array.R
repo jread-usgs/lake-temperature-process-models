@@ -26,6 +26,7 @@ for (j in 1:nrow(these_jobs)){
   readr::write_csv(driver_add_rain(meteo_data), path = meteo_filepath)
 
   # prep caldat_fl file to be used for calibration:
+  # filter data file, write to "calibration_obs.tsv" in sim_dir or pre-write the file?
   stop('need to write to calibration file')
 
   nml_cal <- run_glm_cal(nml_file, sim_dir, caldata_fl)
