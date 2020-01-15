@@ -62,3 +62,33 @@ This project uses rsync and ssh to pull/push data/predictions from Yeti in the `
   -  Copy the public key to Yeti with `ssh-copy-id username@yeti.cr.usgs.gov` (also from within your local terminal). You can then check that you're set up by running `ssh username@yeti.cr.usgs.gov` from a terminal - it should log you in without a password.
   -  On Windows with RStudio, there will be a problem in that SSH/rsync assume your `.ssh` folder is at `~/.ssh`, but `~` means `C:/Users/username` within a terminal but `C:/Users/username/Documents` within RStudio. Therefore you should create a symlink for the `.ssh` folder by calling `ln -s ~/.ssh ~/Documents/.ssh` in a bash shell.
 
+
+
+### my workflow
+I build things locally and some (not all) sync to Yeti as part of the process. 
+Seems rsync is faster than the cross-platform ssh package
+I need to sync nmls and drivers to yeti, then use the "out" job list (rds) to tell yeti what to do
+When the job list is on yeti, I need to modify the batch file with the same number of array jobs that appear in the job table
+When the jobs are done, I sync _from_ yeti (see below) the feather files. 
+Then I run a failed job array (same process as above) which picks up maybe a few more lakes when they run again. I don't know why they'd fail the first time but not the second. Doesn't make sense to me and I haven't dug into the lobs. 
+
+So, this is clunky and seems that if I used `drake` instead on Yeti, I would be happier. 
+
+Still some pain points with moving files around to and from Yeti. Kinda slow and maybe I should zip files or something (although rsync must be compressing, right?)
+
+sync to yeti
+```
+cd 2_prep/sync
+rsync -avz .  jread@yeti.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models/2_prep/sync
+
+# sync the job lists to yeti:
+cd 2_prep/out
+rsync -avz .  jread@yeti.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models/2_prep/out
+```
+
+sync from yeti
+```
+cd 3_run/sync
+rsync -avz jread@yeti.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models/3_run/sync/. .
+``
+
