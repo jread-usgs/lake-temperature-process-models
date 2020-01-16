@@ -26,6 +26,20 @@ sync_drivers <- function(fileout, nml_list){
   yeti_put(dest_dir = dest_dir, local_dir = sync_dir, files = nml_meteo_files)
 }
 
+build_pball_job_df <- function(fileout, nml_list, sim_ids){
+
+  # all_jobs <- data.frame(
+  #     sim_id = c('pball_nhdhr_166868607','pball_nhdhr_166868799'),
+  #     nml_file = c('2_prep/sync/nhdhr_166868607.nml', '2_prep/sync/nhdhr_166868799.nml'),
+  #     meteo_file = c('2_prep/sync/NLDAS_time[0.351500]_x[225]_y[159].csv', '2_prep/sync/NLDAS_time[0.351500]_x[226]_y[158].csv'),
+  #     result_file = c('3_run/sync/pball_nhdhr_1668686073_results.nml', '3_run/sync/pball_nhdhr_166868799_results.nml'),
+  #     stringsAsFactors = FALSE)
+
+  all_jobs <- build_job_df(sim_ids = sim_ids, nml_list = nml_list) %>%
+    mutate(result_file = sprintf('3_run/sync/%s_results.nml', sim_id)) %>%
+    saveRDS(fileout)
+
+}
 
 build_pb0_job_list <- function(fileout, nml_list, job_chunk = 40, temperature_file){
 
@@ -51,6 +65,17 @@ build_pb0_job_list <- function(fileout, nml_list, job_chunk = 40, temperature_fi
   build_job_list(sim_ids, job_chunk = job_chunk, nml_list) %>%
     saveRDS(fileout)
 
+}
+
+build_job_df <- function(sim_ids, nml_list){
+
+  nml_list <- nml_list[sim_ids]
+  data.frame(stringsAsFactors = FALSE,
+             site_id = sim_ids,
+             sim_id = paste0('pball_', sim_ids),
+             nml_file = paste0('2_prep/sync/', sim_ids, '.nml'),
+             meteo_file = paste0('2_prep/sync/',
+                                 sapply(1:length(nml_list), FUN = function(x) nml_list[[x]]$meteo_fl)))
 }
 
 build_job_list <- function(sim_ids, job_chunk, nml_list){
