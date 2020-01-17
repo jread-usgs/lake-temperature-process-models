@@ -33,7 +33,7 @@ feather::read_feather('2_prep/out/temperature_obs.feather') %>% filter(site_id =
 
 glmtools::write_nml(glm_nml = nml_obj, file = nml_filepath)
 nml_cal <- run_glm_cal(nml_file = nml_filepath, sim_dir, caldata_fl = caldata_fl)
-glmtools::write_nml(glm_nml = nml_cal, this_job$export_file)
+glmtools::write_nml(glm_nml = nml_cal, this_job$result_file)
 
 unlink(sim_dir, recursive = TRUE)
 
