@@ -57,5 +57,6 @@ set_eval_glm <- function(par, caldata_fl, sim_dir, nml_obj){
     message(e)
     return(99) # a high RMSE value
   })
+  message(rmse)
   return(rmse)
 }
