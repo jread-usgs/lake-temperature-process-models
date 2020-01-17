@@ -30,8 +30,8 @@ readr::write_csv(driver_add_rain(meteo_data), path = meteo_filepath)
 feather::read_feather('2_prep/out/temperature_obs.feather') %>% filter(site_id == this_job$site_id) %>%
   select(DateTime = date, Depth = depth, temp) %>% readr::write_csv(caldata_fl)
 
-
-nml_cal <- run_glm_cal(nml_file, sim_dir, caldata_fl = caldata_fl)
+glmtools::write_nml(glm_nml = nml_obj, file = this_job$nml_file)
+nml_cal <- run_glm_cal(nml_file = this_job$nml_file, sim_dir, caldata_fl = caldata_fl)
 glmtools::write_nml(glm_nml = nml_cal, this_job$export_file)
 
 unlink(sim_dir, recursive = TRUE)
