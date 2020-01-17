@@ -28,7 +28,7 @@ readr::write_csv(driver_add_rain(meteo_data), path = meteo_filepath)
 # prep caldat_fl file to be used for calibration:
 # filter data file, write to "calibration_obs.tsv" in sim_dir or pre-write the file?
 feather::read_feather('2_prep/out/temperature_obs.feather') %>% filter(site_id == this_job$site_id) %>%
-  mutate(DateTime = as.Date(date)) %>%
+  mutate(DateTime = as.Date(lubridate::ceiling_date(date, 'days'))) %>%
   select(DateTime, Depth = depth, temp) %>% readr::write_csv(caldata_fl)
 
 glmtools::write_nml(glm_nml = nml_obj, file = this_job$nml_file)
