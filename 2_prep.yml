@@ -21,10 +21,8 @@ targets:
       - 2_prep/out/nml_file_group.yml
       - 2_prep/out/driver_file_group.yml
 
-
-
   2_prep/out/nml_file_group.yml:
-    command: write_nml_files(target_name, nml_list)
+    command: write_nml_files(target_name, nml_list, base_nml = '2_prep/in/nhdhr_105231881.nml')
 
   2_prep/out/driver_file_group.yml:
     command: sync_drivers(target_name,
