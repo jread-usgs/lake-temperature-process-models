@@ -53,6 +53,7 @@ set_eval_glm <- function(par, caldata_fl, sim_dir, nml_obj){
     rmse <- glmtools::compare_to_field(sim_fl, field_file = caldata_fl,
                                        metric = 'water.temperature')
   }, error = function(e){
+    message(e)
     return(99) # a high RMSE value
   })
 
