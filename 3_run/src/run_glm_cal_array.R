@@ -9,7 +9,7 @@ if(is.na(task_id)){
 all_jobs <- readRDS('2_prep/out/glm_pball_array.rds')
 source('3_run/src/run_glm_utils.R')
 source('3_run/src/calibration_utils.R')
-
+library(dplyr)
 
 this_job <- all_jobs[task_id, ]
 sim_dir <- file.path(Sys.getenv('LOCAL_SCRATCH', unset="sim-scratch"), this_job$sim_id)
