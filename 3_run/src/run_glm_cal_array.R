@@ -13,7 +13,7 @@ source('3_run/src/calibration_utils.R')
 
 this_job <- all_jobs[task_id, ]
 sim_dir <- file.path(Sys.getenv('LOCAL_SCRATCH', unset="sim-scratch"), this_job$sim_id)
-# sim_dir <- file.path(tempdir(), this_job$sim_id)
+# if local: sim_dir <- file.path(tempdir(), this_job$sim_id)
 dir.create(sim_dir, recursive = TRUE)
 
 caldata_fl <- file.path(sim_dir, paste0(this_job$site_id, '_obs.csv'))
@@ -31,7 +31,7 @@ feather::read_feather('2_prep/out/temperature_obs.feather') %>% filter(site_id =
   select(DateTime = date, Depth = depth, temp) %>% readr::write_csv(caldata_fl)
 
 
-nml_cal <- run_glm_cal(nml_file, sim_dir, caldata_fl)
+nml_cal <- run_glm_cal(nml_file, sim_dir, caldata_fl = caldata_fl)
 glmtools::write_nml(glm_nml = nml_cal, this_job$export_file)
 
 unlink(sim_dir, recursive = TRUE)
