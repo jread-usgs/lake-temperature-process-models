@@ -46,7 +46,7 @@ set_eval_glm <- function(par, caldata_fl, sim_dir, nml_obj){
     last_time <- glmtools::get_var(sim_fl, 'wind') %>%
       tail(1) %>% pull(DateTime)
 
-    if (last_time < as.Date(as.Date(get_nml_value(nml_obj, "stop")))){
+    if (last_time < as.Date(as.Date(glmtools::get_nml_value(nml_obj, "stop")))){
       stop('incomplete sim, ended on ', last_time)
     }
 
