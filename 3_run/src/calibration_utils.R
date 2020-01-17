@@ -34,15 +34,15 @@ run_glm_cal <- function(nml_file, sim_dir, cal_params = c('cd','Kw','coef_wind_s
 
 set_eval_glm <- function(par, caldata_fl, sim_dir, nml_obj){
   # set params, run model, check valid, calc rmse
-  nlm_obj <- glmtools::set_nml(nml_obj, arg_list = as.list(par))
-
-  sim_fl <- file.path(sim_dir, 'output.nc')
+  # message(paste(as.list(par), collapse = ', ', sep = '| '))
 
   # run model, verify legit sim and calculate/return calibration RSME, otherwise return 10 or 999 (something high)
   rmse = tryCatch({
 
+    nml_obj <- glmtools::set_nml(nml_obj, arg_list = as.list(par))
     # from "run_glm_utils.R"
-    run_glm(sim_dir, nml_obj)
+    sim_fl <- run_glm(sim_dir, nml_obj)
+
     last_time <- glmtools::get_var(sim_fl, 'wind') %>%
       tail(1) %>% pull(DateTime)
 
@@ -52,10 +52,10 @@ set_eval_glm <- function(par, caldata_fl, sim_dir, nml_obj){
 
     rmse <- glmtools::compare_to_field(sim_fl, field_file = caldata_fl,
                                        metric = 'water.temperature')
+
   }, error = function(e){
     message(e)
     return(99) # a high RMSE value
   })
-
   return(rmse)
 }
