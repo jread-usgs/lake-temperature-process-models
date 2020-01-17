@@ -22,13 +22,6 @@ targets:
       - 2_prep/out/glm_pb0_array.rds
 
 
-  2_prep/out/glm_pb0_array.rds:
-    command: build_pb0_job_list(target_name, nml_list, job_chunk = I(20),
-      temperature_file = '../lake-temperature-model-prep/7b_temp_merge/out/merged_temp_data_daily.feather')
-
-  2_prep/out/glm_pb0_fails_array.rds:
-    command: failed_array_jobs(target_name, '2_prep/out/glm_pb0_array.rds', job_chunk = I(1), nml_list, dummy = I('2019-11-02'))
-
   files_to_zip:
     command: remove_wrr(I('3_run/out/temperature_obs.feather'))
 

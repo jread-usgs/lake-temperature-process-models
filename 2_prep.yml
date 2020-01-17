@@ -14,12 +14,14 @@ sources:
   - 2_prep/src/nml_write.R
   - 2_prep/src/driver_utils.R
   - 2_prep/src/yeti_job_utils.R
+  - 2_prep/src/file_utils.R
 
 targets:
   2_prep:
     depends:
       - 2_prep/out/nml_file_group.yml
-      - 2_prep/out/driver_file_group.yml
+      - 2_prep/out/glm_pball_array.rds
+      - 2_prep/out/temperature_obs.feather
 
   2_prep/out/nml_file_group.yml:
     command: write_nml_files(target_name, nml_list, base_nml = '2_prep/in/nhdhr_105231881.nml')
@@ -27,3 +29,28 @@ targets:
   2_prep/out/driver_file_group.yml:
     command: sync_drivers(target_name,
       nml_list)
+
+  2_prep/out/temperature_obs.feather:
+    command: file.copy('../lake-temperature-model-prep/7b_temp_merge/out/merged_temp_data_daily.feather',
+      to = target_name, overwrite = I(TRUE))
+
+  2_prep/out/glm_pb0_array.rds:
+    command: build_pb0_job_list(target_name, nml_list, job_chunk = I(20),
+      temperature_file = '2_prep/out/temperature_obs.feather')
+
+  # cal_lakes not used now, as we're using Jared's list. Could be swapped in later in pball
+  cal_lakes:
+    command: filter_cal_lakes(nml_list,
+      min_dates = I(20),
+      temperature_file = '2_prep/out/temperature_obs.feather')
+
+  jared_source_ids:
+    command: read_feather_ids('2_prep/in/Jared_TrainLakes.feather')
+
+  2_prep/out/glm_pball_array.rds:
+    command: build_pball_job_df(target_name, nml_list, sim_ids = jared_source_ids)
+
+  2_prep/out/glm_pb0_fails_array.rds:
+    command: failed_array_jobs(target_name,
+      '2_prep/out/glm_pb0_array.rds', job_chunk = I(1), nml_list, dummy = I('2020-01-12'))
+
