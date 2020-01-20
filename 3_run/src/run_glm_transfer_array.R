@@ -50,7 +50,7 @@ for (j in 1:length(these_jobs$source_id)){
   param_names <- info_names[grepl(info_names, pattern = '^source')]
   nml_args <- setNames(lapply(param_names, FUN = function(x){
     these_jobs[[x]][j]
-  }), stringr::str_remove(param_names, 'source_'))
+  }), substring(param_names, first = 8, last = 1000000L)) # remove "source_"
   # write meteodata into fresh file
   readr::write_csv(driver_add_rain(meteo_data), path = meteo_filepath)
   this_nml_obj <- glmtools::set_nml(nml_obj, arg_list = nml_args)
