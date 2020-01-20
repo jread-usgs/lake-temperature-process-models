@@ -41,6 +41,45 @@ build_pball_job_df <- function(fileout, nml_list, sim_ids){
 
 }
 
+build_transfer_job_list <- function(fileout, cal_nml_obj, base_nml_list, sim_ids){
+  # all_jobs <- list(
+  #   list(
+  #     sim_id = 'nhdhr_123423',
+  #     nml_file = '2_prep/sync/nhdhr_123423.nml',
+  #     meteo_file = '2_prep/sync/NLDAS_time[0.351500]_x[225]_y[159].csv',
+  #     source_id = c('nhdhr_166868607','nhdhr_166868799'),
+  #     source_cd = c(0.00123, 0.0122),
+  #     source_Kw = c(0.23, 0.52),
+  #     source_coef_wind_stir = c(0.22, 0.25),
+  #     export_file = '3_run/sync/transfer_nhdhr_123423_rmse.csv'
+  #   ))
+
+  message('warning, this linked to the params used in `run_glm_cal` and they are hard-code here')
+  all_jobs <- list()
+  for (i in 1:length(sim_ids)){
+    sim_id <- sim_ids[i]
+    source_ids <- sim_ids[!sim_ids %in% sim_id]
+    this_job <- list(
+      sim_id = sim_id,
+      base_nml_file = sprintf('2_prep/sync/%s.nml', sim_id),
+      meteo_file = sprintf('2_prep/sync/%s', base_nml_list[[sim_id]]$meteo_fl),
+      source_id = source_ids,
+      source_cd = sapply(source_ids, function(x){
+        glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'cd')
+      }, USE.NAMES = FALSE),
+      source_Kw = sapply(source_ids, function(x){
+        glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'Kw')
+      }, USE.NAMES = FALSE),
+      source_coef_wind_stir = sapply(source_ids, function(x){
+        glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'coef_wind_stir')
+      }, USE.NAMES = FALSE),
+      export_file = sprintf('3_run/sync/transfer_%s_rmse.csv', sim_id)
+    )
+    all_jobs[[i]] <- this_job
+  }
+  saveRDS(all_jobs, fileout)
+}
+
 build_pb0_job_list <- function(fileout, nml_list, job_chunk = 40, temperature_file){
 
   # all_jobs <- list(
