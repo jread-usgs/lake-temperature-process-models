@@ -90,5 +90,5 @@ sync from yeti
 ```
 cd 3_run/sync
 rsync -avz jread@yeti.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models/3_run/sync/. .
-``
+```
 
