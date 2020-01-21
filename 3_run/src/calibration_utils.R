@@ -21,12 +21,13 @@ run_glm_cal <- function(nml_file, sim_dir, cal_params = c('cd','sw_factor','coef
   out <- optim(fn = set_eval_glm, par=cal_starts, control=list(parscale=parscale),
                caldata_fl = caldata_fl, sim_dir = sim_dir, nml_obj = nml_obj)
 
-  nlm_obj <- glmtools::set_nml(nml_obj, arg_list = as.list(out$par))
+  nlm_obj <- glmtools::set_nml(nml_obj, arg_list = setNames(as.list(out$par), cal_params))
 
   # write the rmse and other details into a new block in the nml "results"
   nml_obj$results <- list(rmse = out$value,
                           sim_time = format(Sys.time(), '%Y-%m-%d %H:%M'),
                           cal_params = cal_params,
+                          cal_values = out$par,
                           cal_parscale = parscale)
 
   return(nml_obj)
