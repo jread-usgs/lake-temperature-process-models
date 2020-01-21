@@ -1,6 +1,6 @@
 
-run_glm_cal <- function(nml_file, sim_dir, cal_params = c('cd','Kw','coef_wind_stir'),
-                        cal_parscale = c('cd' = 0.0001, 'Kw' = expression(0.1 * Kw), 'coef_wind_stir' = 0.001),
+run_glm_cal <- function(nml_file, sim_dir, cal_params = c('cd','sw_factor','coef_mix_hyp'),
+                        cal_parscale = c('cd' = 0.0001, 'sw_factor' = 0.5, 'coef_mix_hyp' = 0.01),
                         caldata_fl){
 
   # read cal/obs file, filter to _this_ lake if needed, write to csv/tsv so it will work with glmtools::compare_to_field
