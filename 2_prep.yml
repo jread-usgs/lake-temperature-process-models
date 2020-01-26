@@ -42,18 +42,19 @@ targets:
   # cal_lakes not used now, as we're using Jared's list. Could be swapped in later in pball
   cal_lakes:
     command: filter_cal_lakes(nml_list,
-      min_dates = I(20),
+      min_dates = I(50), min_depths = I(5), min_depth_density = I(0.5),
       temperature_file = '2_prep/out/temperature_obs.feather')
 
   jared_source_ids:
     command: read_feather_ids('2_prep/in/Jared_TrainLakes.feather')
 
   2_prep/out/glm_pball_array.rds:
-    command: build_pball_job_df(target_name, nml_list, sim_ids = jared_source_ids)
+    command: build_pball_job_df(target_name, nml_list, sim_ids = cal_lakes) # jared_source_ids)
 
+  # make sure to re-run nhdhr_120019294 when COMPLETE!!! (Mille Lacs...very slow for some reason)
   cal_result_nmls:
     command: filter_finished_cals(result_dir = I('3_run/sync'), pattern = I('^pball_nhdhr_.*.nml$'),
-      dummy = I('2020-01-19'))
+      dummy = I('2020-01-20'))
 
   2_prep/out/glm_transfer_array.rds:
     command: build_transfer_job_list(target_name, cal_nml_obj = cal_result_nmls, base_nml_list = nml_list, sim_ids = jared_source_ids)

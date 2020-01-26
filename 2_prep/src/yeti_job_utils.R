@@ -1,4 +1,44 @@
 
+#' @param nml_list a big 'ol list of the nml params that will be updated from the defaults
+#' @param temperature_file the feather file that includes site_id, depth, and temperature observed
+#' @param min_date minimum number of unique observation dates that must exist before a lake is included
+#' @param min_depths minimum number of depths per each unique date
+#' @param min_depth_density the average number of observations per meter for each unique date
+#' use `inf` to ignore
+#'
+#' @details `min_depth_density`` overrides `min_depths`` if the lake is shallow enough so
+#' that `ceiling`(`lake_depth` * `min_depth_density`) < `min_depths`
+filter_cal_lakes <- function(nml_list, temperature_file, min_dates, min_depths, min_depth_density = Inf){
+
+  message("warning, remove summarize for non-unique site_id, depth, date rows when that is in `prep`")
+
+
+  t_data <- feather::read_feather(temperature_file) %>% select(-source) %>%
+    group_by(site_id, date, depth) %>% summarise(temp = mean(temp)) %>% ungroup()
+  # first get the site_ids that have at least `min_date` unique dates,
+  # this will help us ignore lakes that definately won't be included:
+  meets_min_date <- select(t_data, site_id, date) %>%
+    distinct() %>% group_by(site_id) %>% tally() %>%
+    filter(n >= min_dates, site_id %in% names(nml_list)) %>% pull(site_id)
+
+  # find the min number of obs per date requirement for each lake by including `lake_depth` and `min_depth_density`
+  obs_requirements <- purrr::map(meets_min_date, function(x){
+    lake_depth <- nml_list[[x]]$lake_depth
+    site_id <- nml_list[[x]]$site_id
+    min_obs <- min(ceiling(lake_depth * min_depth_density), min_depths)
+    data.frame(site_id = site_id, lake_depth = lake_depth, min_obs = min_obs, stringsAsFactors = FALSE)
+  }) %>% purrr::reduce(dplyr::bind_rows)
+
+
+  t_data %>% filter(site_id %in% meets_min_date) %>% left_join(obs_requirements) %>%
+    filter(depth <= lake_depth) %>% # removing any depths below `lake_depth`
+    group_by(site_id, date) %>% summarize(n_obs = length(depth), min_obs = dplyr::first(min_obs)) %>%
+    filter(n_obs >= min_obs) %>% # removing any dates that don't meet the requirement for a profile
+    group_by(site_id) %>% tally() %>% filter(n >= min_dates) %>% pull(site_id) # removing any lakes that don't meet the min dates requirement
+
+}
+
+
 
 yeti_put <- function(local_dir, dest_dir, files){
   user <- Sys.info()[['user']]
@@ -59,19 +99,43 @@ build_transfer_job_list <- function(fileout, cal_nml_obj, base_nml_list, sim_ids
   for (i in 1:length(sim_ids)){
     sim_id <- sim_ids[i]
     source_ids <- sim_ids[!sim_ids %in% sim_id]
+
     this_job <- list(
       sim_id = sim_id,
       base_nml_file = sprintf('2_prep/sync/%s.nml', sim_id),
       meteo_file = sprintf('2_prep/sync/%s', base_nml_list[[sim_id]]$meteo_fl),
       source_id = source_ids,
+      # something special for the params in optim:
+
       source_cd = sapply(source_ids, function(x){
         glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'cd')
       }, USE.NAMES = FALSE),
       source_Kw = sapply(source_ids, function(x){
         glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'Kw')
       }, USE.NAMES = FALSE),
-      source_coef_wind_stir = sapply(source_ids, function(x){
-        glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'coef_wind_stir')
+      source_coef_mix_hyp = sapply(source_ids, function(x){
+        glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'coef_mix_hyp')
+      }, USE.NAMES = FALSE),
+      source_longitude = sapply(source_ids, function(x){
+        glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'longitude')
+      }, USE.NAMES = FALSE),
+      source_latitude = sapply(source_ids, function(x){
+        glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'latitude')
+      }, USE.NAMES = FALSE),
+      source_bsn_len = sapply(source_ids, function(x){
+        glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'bsn_len')
+      }, USE.NAMES = FALSE),
+      source_bsn_wid = sapply(source_ids, function(x){
+        glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'bsn_wid')
+      }, USE.NAMES = FALSE),
+      source_max_layer_thick = sapply(source_ids, function(x){
+        glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'max_layer_thick')
+      }, USE.NAMES = FALSE),
+      source_min_layer_thick = sapply(source_ids, function(x){
+        glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'min_layer_thick')
+      }, USE.NAMES = FALSE),
+      source_sw_factor = sapply(source_ids, function(x){
+        glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'sw_factor')
       }, USE.NAMES = FALSE),
       export_file = sprintf('3_run/sync/transfer_%s_rmse.csv', sim_id)
     )
