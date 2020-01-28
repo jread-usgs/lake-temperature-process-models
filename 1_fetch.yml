@@ -5,17 +5,31 @@ target_default: 1_fetch
 packages:
   - scipiper
   - dplyr
+  - sbtools
 
 sources:
+  - 1_fetch/src/sb_utils.R
   - 1_fetch/src/fetch_utils.R
 
 targets:
   1_fetch:
     depends:
       - nml_list
+      - 1_fetch/out/pb0_config.json
+      - 1_fetch/out/03_temperature_observations.csv
       - model_ids
 
   # relies on the .csv contents of '../lake-temperature-model-prep/7_drivers_munge/out'
+
+  1_fetch/out/pb0_config.json:
+    command: fetch_sb_file(target_name, sb_id = I('5db81967e4b0b0c58b5a4c3f'), dummy = I("2020-01-25"))
+
+  1_fetch/out/03_temperature_observations.csv:
+    command: fetch_sb_file(target_name, sb_id = I('5db81985e4b0b0c58b5a4c41'),
+      sb_file = I('03_temperature_observations.zip'), unzip = TRUE, dummy = I("2020-01-25"))
+
+  # this is pretty redundant with pb0_config.json, but is _only_ the params that change from lake to lake
+  # we need if for the time being right now
   nml_list:
     command: filter_nml_list('../lake-temperature-model-prep/7_config_merge/out/nml_list.rds')
 

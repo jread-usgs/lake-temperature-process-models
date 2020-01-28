@@ -8,12 +8,12 @@
 #'
 #' @details `min_depth_density`` overrides `min_depths`` if the lake is shallow enough so
 #' that `ceiling`(`lake_depth` * `min_depth_density`) < `min_depths`
-filter_cal_lakes <- function(nml_list, temperature_file, min_dates, min_depths, min_depth_density = Inf){
+filter_cal_lakes <- function(nml_JSON, temperature_file, min_dates, min_depths, min_depth_density = Inf){
 
   message("warning, remove summarize for non-unique site_id, depth, date rows when that is in `prep`")
+  nml_list <- jsonlite::read_json(nml_JSON)
 
-
-  t_data <- feather::read_feather(temperature_file) %>% select(-source) %>%
+  t_data <- readr::read_csv(temperature_file) %>% select(-source) %>%
     group_by(site_id, date, depth) %>% summarise(temp = mean(temp)) %>% ungroup()
   # first get the site_ids that have at least `min_date` unique dates,
   # this will help us ignore lakes that definately won't be included:
@@ -23,10 +23,9 @@ filter_cal_lakes <- function(nml_list, temperature_file, min_dates, min_depths, 
 
   # find the min number of obs per date requirement for each lake by including `lake_depth` and `min_depth_density`
   obs_requirements <- purrr::map(meets_min_date, function(x){
-    lake_depth <- nml_list[[x]]$lake_depth
-    site_id <- nml_list[[x]]$site_id
+    lake_depth <- nml_list[[x]]$init_profiles$lake_depth
     min_obs <- min(ceiling(lake_depth * min_depth_density), min_depths)
-    data.frame(site_id = site_id, lake_depth = lake_depth, min_obs = min_obs, stringsAsFactors = FALSE)
+    data.frame(site_id = x, lake_depth = lake_depth, min_obs = min_obs, stringsAsFactors = FALSE)
   }) %>% purrr::reduce(dplyr::bind_rows)
 
 
@@ -144,6 +143,28 @@ build_transfer_job_list <- function(fileout, cal_nml_obj, base_nml_list, sim_ids
   saveRDS(all_jobs, fileout)
 }
 
+build_pball_job_list <- function(fileout, cal_nml_ind, job_chunk = 40){
+  nml_file_info <- tibble(filepath = yaml::yaml.load_file(cal_nml_ind) %>% names()) %>%
+    tidyr::extract(filepath, 'site_id', "pball_(.*).nml", remove = FALSE)
+
+  start_idx <- seq(1, to = nrow(nml_file_info), by = job_chunk)
+  end_idx <- c(tail(start_idx - 1, -1), nrow(nml_file_info))
+  all_jobs <- list()
+  for (i in 1:length(start_idx)){
+    all_jobs[[i]] <- data.frame(stringsAsFactors = FALSE,
+                                sim_id = paste0('pball_', nml_file_info$site_id[start_idx[i]:end_idx[i]]),
+                                nml_file = paste0(nml_file_info$filepath[start_idx[i]:end_idx[i]]),
+                                meteo_file = paste0('2_prep/sync/', sapply(start_idx[i]:end_idx[i], FUN = function(x){
+                                  read_nml(nml_file_info$filepath[x]) %>% get_nml_value(arg_name = 'meteo_fl')
+                                })),
+                                export_file = paste0('3_run/sync/pball_', nml_file_info$site_id[start_idx[i]:end_idx[i]], '_temperatures.feather'))
+  }
+
+  saveRDS(all_jobs, fileout)
+
+
+}
+
 build_pb0_job_list <- function(fileout, nml_list, job_chunk = 40, temperature_file){
 
   # all_jobs <- list(
@@ -161,7 +182,7 @@ build_pb0_job_list <- function(fileout, nml_list, job_chunk = 40, temperature_fi
   #     stringsAsFactors = FALSE)
   # )
 
-  sim_ids <- read_feather(temperature_file) %>%
+  sim_ids <- readr::read_csv(temperature_file) %>%
     left_join(data.frame(site_id = names(nml_list), stringsAsFactors = FALSE), .) %>% group_by(site_id) %>%
     summarize(n = length(unique(date))) %>% arrange(desc(n)) %>% pull(site_id)
 
