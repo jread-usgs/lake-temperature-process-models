@@ -10,6 +10,7 @@ packages:
   - dplyr
   - glmtools
   - feather
+  - stringr
   - yaml
   - tidyr
 
@@ -26,9 +27,11 @@ targets:
       - 2_prep/out/glm_pball_array.rds
       - 2_prep/out/temperature_obs.feather
 
+  # these files should have been prefixed with pb0 to designate that they are uncalibrated defaults...
   2_prep/out/nml_file_group.yml:
     command: write_nml_files(target_name, nml_list, base_nml = '2_prep/in/nhdhr_105231881.nml')
 
+  # naming here should be pball instead of cal...geez a bunch of my decisions were shortsighted.
   2_prep/out/nml_cal_file_group.yml:
     command: write_result_nml_files(target_name, nml_objs = cal_result_nmls,
       pb0_nml_list = nml_list,
@@ -46,6 +49,8 @@ targets:
     command: build_pball_job_list(target_name,
       cal_nml_ind = '2_prep/out/nml_cal_file_group.yml', job_chunk = I(20))
 
+  # this stage is run after the pb0 lakes are run and pushed up to SB. Perhaps this needs a different remake_file
+  # to designate the break
   # cal_lakes not used now, as we're using Jared's list. Could be swapped in later in pball
   cal_lakes:
     command: filter_cal_lakes('2_prep/in/pb0_config.json',
@@ -55,18 +60,35 @@ targets:
   jared_source_ids:
     command: read_feather_ids('2_prep/in/Jared_TrainLakes.feather')
 
+  jared_test_ids:
+    command: read_feather_ids('2_prep/in/Jared_TestLakes.feather')
+
   2_prep/out/glm_pball_array.rds:
     command: build_pball_job_df(target_name, nml_list, sim_ids = cal_lakes) # jared_source_ids)
 
-  # make sure to re-run nhdhr_120019294 when COMPLETE!!! (Mille Lacs...very slow for some reason)
+  # NEED TO REMOVE rmse = 99 results, since they never had successful runs...
+  # am seeing Error in surface_height[j] <- elev[NS[j], j] :
+  # replacement has length zero
+  # Calls: tryCatch ... export_temp -> <Anonymous> -> get_var -> get_surface_height
   cal_result_nmls:
     command: filter_finished_cals(result_dir = I('3_run/sync'), pattern = I('^pball_nhdhr_.*.nml$'),
       cal_lakes = cal_lakes,
       dummy = I('2020-01-24'))
 
   2_prep/out/glm_transfer_array.rds:
-    command: build_transfer_job_list(target_name, cal_nml_obj = cal_result_nmls, base_nml_list = nml_list, sim_ids = jared_source_ids)
+    command: build_transfer_job_list(target_name, cal_nml_obj = cal_result_nmls,
+      base_nml_list = nml_list, sim_ids = jared_source_ids)
 
+  2_prep/out/glm_transfer_test_array.rds:
+    command: build_transfer_test_job_list(target_name, cal_nml_obj = cal_result_nmls,
+      base_nml_list = nml_list, source_ids = jared_source_ids, test_ids = jared_test_ids)
+
+
+  2_prep/out/glm_pball_export_fails_array.rds:
+    command: failed_array_jobs(target_name,
+      '2_prep/out/glm_pball_export.rds', job_chunk = I(1), nml_list, dummy = I('2020-01-28'))
+
+  # for some reason we need to re-run a few stragglers:
   2_prep/out/glm_pb0_fails_array.rds:
     command: failed_array_jobs(target_name,
       '2_prep/out/glm_pb0_array.rds', job_chunk = I(1), nml_list, dummy = I('2020-01-12'))

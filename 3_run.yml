@@ -37,8 +37,13 @@ targets:
 
   3_run/out/RMSE_transfer_glm.csv:
     command: summarize_transfer_glm(target_name,
-      dirname = I("3_run/sync"), pattern = I('transfer'),
+      dirname = I("3_run/sync"), pattern = I('^transfer_nhdhr_.*_rmse.csv$'),
       dummy = I('2020-01-22'))
+
+  3_run/out/RMSE_transfer_test_glm.csv:
+    command: summarize_transfer_glm(target_name,
+      dirname = I("3_run/sync"), pattern = I('^transfer_test_nhdhr_.*_rmse.csv$'),
+      dummy = I('2020-01-31'))
 
   3_run/out/temperature_obs.feather:
     command: subset_temperature(target_name, files_to_zip, '../lake-temperature-model-prep/7b_temp_merge/out/merged_temp_data_daily.feather')
