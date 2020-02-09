@@ -26,7 +26,9 @@ library(dplyr)
 
 these_jobs <- all_jobs[[task_id]]
 
+## was Error reading the 'glm_setup' namelist from glm2.nml when using LOCAL_SCRATCH
 sim_dir <- file.path(Sys.getenv('LOCAL_SCRATCH', unset="sim-scratch"), these_jobs$sim_id)
+sim_dir <- file.path(these_jobs$sim_id)
 
 meteo_filepath <- file.path(sim_dir, paste0(these_jobs$sim_id, '.csv'))
 
@@ -63,9 +65,7 @@ for (j in 1:length(these_jobs$source_id)){
   rmse <- tryCatch({
     nc_path <- run_glm(sim_dir, this_nml_obj, export_file = NULL)
     readr::write_csv(cal_obs, caldata_fl)
-    message(print(glmtools::read_nml(file.path(sim_dir, 'glm2.nml'))))
-    # was Error reading the 'glm_setup' namelist from glm2.nml
-    #message(paste(dir(sim_dir), collapse = '\n'))
+
     last_time <- glmtools::get_var(nc_path, 'wind') %>%
       tail(1) %>% pull(DateTime)
 
