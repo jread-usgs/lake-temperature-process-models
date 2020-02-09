@@ -64,7 +64,7 @@ for (j in 1:length(these_jobs$source_id)){
     nc_path <- run_glm(sim_dir, this_nml_obj, export_file = NULL)
     readr::write_csv(cal_obs, caldata_fl)
 
-    warning(paste(dir(sim_dir), collapse = '\n'))
+    message(paste(dir(sim_dir), collapse = '\n'))
     last_time <- glmtools::get_var(nc_path, 'wind') %>%
       tail(1) %>% pull(DateTime)
 
