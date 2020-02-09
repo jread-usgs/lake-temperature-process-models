@@ -18,8 +18,7 @@ extend_depth_calc_rmse <- function(nc_path, field_file, extend_depth){
 
   # mostly borrows from `resample_to_field`
 
-  field_obs <- readr::read_csv(field_file) %>%
-    select(date = DateTime, depth = Depth, obs = temp)
+  field_obs <- glmtools::read_field_obs(field_file)
 
   dup_rows <- duplicated(field_obs[,1:2])
   if (any(dup_rows)){
@@ -34,9 +33,13 @@ extend_depth_calc_rmse <- function(nc_path, field_file, extend_depth){
   unq_z <- sort(unique(field_obs$Depth))
 
   # build water temp data.frame
-  var_data <- get_var(file = nc_path, reference = 'surface', var_name = var_name,
+  var_data <- get_var(file = nc_path, reference = 'surface', var_name = 'temp',
                       z_out = unq_z, t_out = unique(field_obs$DateTime),
                       method = method, precision = precision)
+
+  # as.Date:
+  field_obs <- readr::read_csv(field_file) %>%
+    select(date = DateTime, depth = Depth, obs = temp)
 
   #make it skinny:
   joined_temperature <- tidyr::gather(var_data, depth_cd, temp, -DateTime) %>%
