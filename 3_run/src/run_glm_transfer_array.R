@@ -62,9 +62,11 @@ for (j in 1:length(these_jobs$source_id)){
 
   rmse <- tryCatch({
     nc_path <- run_glm(sim_dir, this_nml_obj, export_file = NULL)
+    message(print(nml_obj))
     readr::write_csv(cal_obs, caldata_fl)
 
-    message(paste(dir(sim_dir), collapse = '\n'))
+    # was Error reading the 'glm_setup' namelist from glm2.nml
+    #message(paste(dir(sim_dir), collapse = '\n'))
     last_time <- glmtools::get_var(nc_path, 'wind') %>%
       tail(1) %>% pull(DateTime)
 
