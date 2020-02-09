@@ -3,6 +3,7 @@
 run_glm <- function(sim_dir, nml_obj, export_file = NULL){
 
   glmtools::write_nml(nml_obj, file.path(sim_dir, 'glm2.nml'))
+  message(print(glmtools::read_nml(nml_obj)))
   GLMr::run_glm(sim_dir, verbose = FALSE)
   out_dir <- glmtools::get_nml_value(nml_obj, arg_name = 'out_dir')
   out_file <- paste0(glmtools::get_nml_value(nml_obj, arg_name = 'out_fn'), '.nc')
