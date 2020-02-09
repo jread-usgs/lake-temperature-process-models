@@ -27,7 +27,7 @@ library(dplyr)
 these_jobs <- all_jobs[[task_id]]
 
 sim_dir <- file.path(Sys.getenv('LOCAL_SCRATCH', unset="sim-scratch"), these_jobs$sim_id)
-sim_dir <- file.path("sim-scratch", these_jobs$sim_id)
+
 meteo_filepath <- file.path(sim_dir, paste0(these_jobs$sim_id, '.csv'))
 
 base_nml <- these_jobs$base_nml_file
