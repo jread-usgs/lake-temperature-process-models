@@ -35,7 +35,7 @@ nml_obj <- glmtools::set_nml(nml_obj, arg_name = 'meteo_fl', basename(meteo_file
 
 base_meteo <- these_jobs$meteo_file
 export_file <- these_jobs$export_file
-caldata_fl <- file.path(sim_dir, paste0(this_job$site_id, '_obs.csv'))
+caldata_fl <- file.path(sim_dir, paste0(these_jobs$sim_id, '_obs.csv'))
 
 # filter data file, write to "calibration_obs.tsv" in sim_dir or pre-write the file?
 cal_obs <- feather::read_feather('2_prep/out/temperature_obs.feather') %>% filter(site_id == these_jobs$sim_id) %>%

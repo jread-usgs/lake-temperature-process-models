@@ -73,7 +73,7 @@ targets:
   cal_result_nmls:
     command: filter_finished_cals(result_dir = I('3_run/sync'), pattern = I('^pball_nhdhr_.*.nml$'),
       cal_lakes = cal_lakes,
-      dummy = I('2020-01-24'))
+      dummy = I('2020-02-08'))
 
   2_prep/out/glm_transfer_array.rds:
     command: build_transfer_job_list(target_name, cal_nml_obj = cal_result_nmls,
