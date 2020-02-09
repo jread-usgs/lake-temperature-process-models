@@ -54,7 +54,8 @@ extend_depth_calc_rmse <- function(nc_path, field_file, extend_depth){
              select(-depth_cd) %>%
     filter(depth <= extend_depth) %>% group_by(DateTime) %>% arrange(depth) %>%
     tidyr::fill(temp, .direction = 'down') %>% ungroup() %>%
-    mutate(date = as.Date(lubridate::ceiling_date(DateTime, 'days'))) %>%
+    mutate(date =  as.Date(DateTime)) %>% #as.Date(lubridate::ceiling_date(DateTime, 'days'))) was causing /usr/lib64/libstdc++.so.6: version `CXXABI_1.3.8' not found (required by /cxfs/projects/usgs/water/iidd/data-sci/lake-temp/glm-optim-wrr/Rlib/stringi/libs/stringi.so)[jread@yeti-login20 lake-temperature-process-models] scancel -u jread
+
     select(date, depth, modeled = temp) %>% inner_join(field_obs)
 
   sqrt(mean((joined_temperature$modeled - joined_temperature$obs)^2, na.rm=TRUE))
