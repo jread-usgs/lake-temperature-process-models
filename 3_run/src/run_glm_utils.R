@@ -45,12 +45,12 @@ extend_depth_calc_rmse <- function(nc_path, field_file, extend_depth){
 
   #make it skinny:
   joined_temperature <- tidyr::gather(var_data, depth_cd, temp, -DateTime) %>%
-    mutate(depth = as.numeric(stringr::str_remove(depth_cd, 'temp_'))) %>% select(-depth_cd) %>%
+    mutate(depth = as.numeric(substring(depth_cd, first = 6, last = 1000000L))) %>%
+             select(-depth_cd) %>%
     filter(depth <= extend_depth) %>% group_by(DateTime) %>% arrange(depth) %>%
     tidyr::fill(temp, .direction = 'down') %>% ungroup() %>%
     mutate(date = as.Date(lubridate::ceiling_date(DateTime, 'days'))) %>%
     select(date, depth, modeled = temp) %>% inner_join(field_obs)
-
 
   sqrt(mean((joined_temperature$modeled - joined_temperature$obs)^2, na.rm=TRUE))
 }
