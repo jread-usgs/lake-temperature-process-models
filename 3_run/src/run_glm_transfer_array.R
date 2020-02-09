@@ -70,7 +70,7 @@ for (j in 1:length(these_jobs$source_id)){
     if (lubridate::ceiling_date(last_time) < as.Date(glmtools::get_nml_value(this_nml_obj, "stop"))){
       stop('incomplete sim, ended on ', last_time)
     }
-
+    warning(paste(dir(sim_dir), collapse = '\n'))
     rmse <- extend_depth_calc_rmse(nc_path, field_file = caldata_fl,
                                    extend_depth = export_depth)
   }, error = function(e){
