@@ -64,13 +64,14 @@ for (j in 1:length(these_jobs$source_id)){
     nc_path <- run_glm(sim_dir, this_nml_obj, export_file = NULL)
     readr::write_csv(cal_obs, caldata_fl)
 
+    warning(paste(dir(sim_dir), collapse = '\n'))
     last_time <- glmtools::get_var(nc_path, 'wind') %>%
       tail(1) %>% pull(DateTime)
 
     if (lubridate::ceiling_date(last_time) < as.Date(glmtools::get_nml_value(this_nml_obj, "stop"))){
       stop('incomplete sim, ended on ', last_time)
     }
-    warning(paste(dir(sim_dir), collapse = '\n'))
+
     rmse <- extend_depth_calc_rmse(nc_path, field_file = caldata_fl,
                                    extend_depth = export_depth)
   }, error = function(e){
