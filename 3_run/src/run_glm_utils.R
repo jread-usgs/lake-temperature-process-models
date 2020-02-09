@@ -32,6 +32,8 @@ extend_depth_calc_rmse <- function(nc_path, field_file, extend_depth){
 
   unq_z <- sort(unique(field_obs$Depth))
 
+  method = 'match'
+  precision = 'days'
   # build water temp data.frame
   var_data <- get_var(file = nc_path, reference = 'surface', var_name = 'temp',
                       z_out = unq_z, t_out = unique(field_obs$DateTime),
