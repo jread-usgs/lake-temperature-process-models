@@ -66,7 +66,7 @@ for (j in 1:length(these_jobs$source_id)){
     last_time <- glmtools::get_var(nc_path, 'wind') %>%
       tail(1) %>% pull(DateTime)
 
-    if (last_time < as.Date(glmtools::get_nml_value(nml_obj, "stop"))){
+    if (lubridate::ceiling_date(last_time) < as.Date(glmtools::get_nml_value(this_nml_obj, "stop"))){
       stop('incomplete sim, ended on ', last_time)
     }
 
