@@ -1,4 +1,48 @@
 
+run_toha_model <- function(nml_file, kw_data, site_id, meteo_fl, export_fl = NULL){
+  sim_dir <- '.sim-scratch'
+
+  cdir <- getwd()
+  on.exit(setwd(cdir))
+
+  nml_obj <- glmtools::read_nml(nml_file)
+  start <- get_nml_value(nml_obj, 'start') %>% as.Date()
+  stop <- get_nml_value(nml_obj, 'stop') %>% as.Date()
+
+  kw_data %>% filter(site_id == !!site_id,
+                     time >= start & time <= stop) %>% select(time, Kd) %>% mutate(Kd = mean(Kd)) %>%
+    readr::write_csv(file.path(sim_dir, 'Kw_file.csv'))
+  # filter and write Kw_file; check dates!!
+  readr::read_csv(meteo_fl) %>% driver_add_rain() %>%
+    readr::write_csv(file.path(sim_dir, 'meteo_fl.csv'))
+
+  # read meteo, add rain, write to file in sim dir
+  # adjust nml: nsave, Kw_file, meteo_fl, start, stop
+  nml_obj <- set_nml(nml_obj, arg_list = list(
+    stop = '2018-12-31',
+    meteo_fl = 'meteo_fl.csv',
+    #nsave = 1,
+    max_layer_thick = 0.75,
+    out_fn = 'constant_kw_GLM3',
+    coef_wind_stir = 0.23,
+    out_dir = '.'
+  ))
+  #nml_obj[['glm_setup']]$Kw_file <- 'Kw_file.csv'
+  nml_obj$light$Kw_file <- 'Kw_file.csv'
+
+  glmtools::write_nml(nml_obj, file.path(sim_dir, 'glm3.nml'))
+
+
+  setwd(sim_dir)
+
+  Sys.setenv(LD_LIBRARY_PATH=system.file('extbin/nixGLM', package = "GLMr"))
+  system2('/media/sf_mntoha-data-release/TOSS_DELETE/glm', wait = TRUE, stdout = NULL,
+          stderr = NULL)
+  #nc_path <- run_glm(sim_dir, nml_obj)
+  browser()
+
+  unlink(sim_dir)
+}
 
 run_glm <- function(sim_dir, nml_obj, export_file = NULL){
 
@@ -18,6 +62,7 @@ run_glm <- function(sim_dir, nml_obj, export_file = NULL){
   }
   invisible(nc_path)
 }
+
 library(glmtools)
 extend_depth_calc_rmse <- function(nc_path, field_file, extend_depth){
 
