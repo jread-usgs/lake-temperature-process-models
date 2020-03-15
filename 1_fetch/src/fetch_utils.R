@@ -5,3 +5,9 @@ filter_nml_list <- function(nml_list_unfiltered_rds) {
   nml_list <- nml_list_unfiltered[file.exists(file.path('../lake-temperature-model-prep/7_drivers_munge/out', meteo_fl))]
   return(nml_list)
 }
+
+
+filter_toha_models <- function(model_ids, kw_data){
+
+  model_ids[model_ids %in% unique(kw_data$site_id)]
+}

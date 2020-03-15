@@ -1,47 +1,73 @@
 
-run_toha_model <- function(nml_file, kw_data, site_id, meteo_fl, export_fl = NULL){
-  sim_dir <- '.sim-scratch'
+run_toha_model <- function(nml_list, kw_data, site_id, meteo_fl, export_fl = NULL){
+  sim_dir <- file.path('.sim-scratch', site_id)
 
-  cdir <- getwd()
-  on.exit(setwd(cdir))
+  on.exit(unlink(sim_dir, recursive = TRUE))
 
-  nml_obj <- glmtools::read_nml(nml_file)
+  nml_args <- nml_list[[site_id]]
+
+  nml_args$sim_name <- nml_args$site_id
+  nml_args$site_id <- NULL
+  nml_args$sw_factor = 1
+  nml_args$start = '1979-04-01'
+  nml_args$stop = '2018-12-31'
+  nml_args$dt=3600
+  nml_args$nsave = 1
+  nml_args$max_layers = 300
+  nml_args$coef_mix_KH = 0.3
+  nml_args$coef_mix_conv = 0.125
+  nml_args$coef_mix_shear = 0.2
+  nml_args$coef_mix_turb = 0.51
+  nml_args$coef_wind_stir = 0.23
+  nml_args$ce = 0.0013
+  nml_args$ch = 0.0013
+  nml_args$coef_mix_hyp = 0.5
+  nml_args$bsn_vals = length(nml_args$H)
+  nml_args$the_depths = c(0, floor(nml_args$lake_depth*100)/100)
+  nml_args$num_depths = 2
+  nml_args$the_temps = c(3,4)
+  nml_args$timefmt = 2
+  nml_args$meteo_fl = 'meteo_fl.csv'
+
+  nml_obj <- read_nml('glm3_template.nml') %>% #, GLM3r::nml_template_path()) # BUT THEY ARE CHANGING THOSE DEFAULTS!! %>%
+    set_nml(arg_list = nml_args)
+
+  nml_obj$debugging <- list(disable_evap = TRUE)
+  nml_obj$sediment <- NULL
+  nml_obj$snowice$dt_iceon_avg = 0.2
+  nml_obj$snowice$min_ice_thickness = 0.01
+  nml_obj$snowice$snow_albedo_factor = 0.72
+  nml_obj$light$Kw_file <- 'Kw_file.csv'
+
   start <- get_nml_value(nml_obj, 'start') %>% as.Date()
   stop <- get_nml_value(nml_obj, 'stop') %>% as.Date()
 
-  kw_data %>% filter(site_id == !!site_id,
-                     time >= start & time <= stop) %>% select(time, Kd) %>% mutate(Kd = mean(Kd)) %>%
-    readr::write_csv(file.path(sim_dir, 'Kw_file.csv'))
-  # filter and write Kw_file; check dates!!
-  readr::read_csv(meteo_fl) %>% driver_add_rain() %>%
-    readr::write_csv(file.path(sim_dir, 'meteo_fl.csv'))
 
-  # read meteo, add rain, write to file in sim dir
-  # adjust nml: nsave, Kw_file, meteo_fl, start, stop
-  nml_obj <- set_nml(nml_obj, arg_list = list(
-    stop = '2018-12-31',
-    meteo_fl = 'meteo_fl.csv',
-    #nsave = 1,
-    max_layer_thick = 0.75,
-    out_fn = 'constant_kw_GLM3',
-    coef_wind_stir = 0.23,
-    out_dir = '.'
-  ))
-  #nml_obj[['glm_setup']]$Kw_file <- 'Kw_file.csv'
-  nml_obj$light$Kw_file <- 'Kw_file.csv'
+  dir.create(sim_dir)
+  kw_data %>% filter(site_id == !!site_id,
+                     time >= start & time <= stop) %>% select(time, Kd) %>%
+    readr::write_csv(file.path(sim_dir, 'Kw_file.csv'))
+
+  file.copy(meteo_fl, file.path(sim_dir, 'meteo_fl.csv'))
+
 
   glmtools::write_nml(nml_obj, file.path(sim_dir, 'glm3.nml'))
+  GLM3r::run_glm(sim_dir, verbose = FALSE)
 
+  out_dir <- glmtools::get_nml_value(nml_obj, arg_name = 'out_dir')
+  out_file <- paste0(glmtools::get_nml_value(nml_obj, arg_name = 'out_fn'), '.nc')
+  if (out_dir == '.'){
+    nc_path <- file.path(sim_dir, out_file)
+  } else {
+    nc_path <- file.path(sim_dir, out_dir, out_file)
+  }
 
-  setwd(sim_dir)
+  if (!is.null(export_fl)){
+    export_as_daily(filepath = export_fl, nml_obj, nc_filepath = nc_path)
+  }
+  unlink(sim_dir, recursive = TRUE)
 
-  Sys.setenv(LD_LIBRARY_PATH=system.file('extbin/nixGLM', package = "GLMr"))
-  system2('/media/sf_mntoha-data-release/TOSS_DELETE/glm', wait = TRUE, stdout = NULL,
-          stderr = NULL)
-  #nc_path <- run_glm(sim_dir, nml_obj)
-  browser()
-
-  unlink(sim_dir)
+  invisible(nc_path)
 }
 
 run_glm <- function(sim_dir, nml_obj, export_file = NULL){

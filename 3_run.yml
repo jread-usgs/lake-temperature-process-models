@@ -38,7 +38,8 @@ targets:
   3_run/out/RMSE_transfer_glm.csv:
     command: summarize_transfer_glm(target_name,
       dirname = I("3_run/sync"), pattern = I('^transfer_nhdhr_.*_rmse.csv$'),
-      dummy = I('2020-01-22'))
+      n_runs = I(144),
+      dummy = I('2020-02-10'))
 
   3_run/out/RMSE_transfer_test_glm.csv:
     command: summarize_transfer_glm(target_name,
