@@ -37,10 +37,8 @@ targets:
   model_ids:
     command: names(nml_list)
 
-
-  # ahhhhhh issues w/ R version
   kw_data:
-    command: readRDS(I("../lake-temperature-model-prep/4_params_munge/out/toha_varying_kw.rds"))
+    command: readRDS("../lake-temperature-model-prep/4_params_munge/out/toha_varying_kw.rds")
 
   toha_model_ids:
     command: filter_toha_models(model_ids,
