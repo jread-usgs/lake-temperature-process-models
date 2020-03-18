@@ -1,3 +1,33 @@
+write_glm3_nml_files <- function(fileout, nml_list, site_ids, base_nml, nml_dir){
+  nml_base <- read_nml(base_nml)
+
+  files_out <- c()
+
+  for (site_id in site_ids){
+    nml_args <- nml_list[[site_id]]
+
+    lake_depth <- nml_args$lake_depth
+    sim_name <- nml_args$site_id
+    nml_args$site_id <- NULL
+
+    nml_args <- append(nml_args, list(
+      sim_name = sim_name,
+      nsave = 1,
+      start = '1979-04-01',
+      stop = '2018-12-31',
+      max_layers = ceiling(100 * lake_depth),
+      bsn_vals = length(nml_args$H),
+      the_depths = c(0, floor(lake_depth*100)/100)
+
+    ))
+    nml_obj <- set_nml(nml_base, arg_list = nml_args)
+
+    file_out <- file.path(nml_dir, paste0(site_id, '_glm3.nml'))
+    write_nml(glm_nml = nml_obj, file = file_out)
+    files_out <- c(files_out, file_out)
+  }
+  sc_indicate(fileout, data_file = files_out)
+}
 
 #' in the future:
 #'  - use sync_dir as an arg
