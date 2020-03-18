@@ -19,7 +19,6 @@ sources:
   - 2_prep/src/driver_utils.R
   - 2_prep/src/yeti_job_utils.R
   - 2_prep/src/file_utils.R
-  - 2_prep/src/local_task_utils.R
 
 targets:
   2_prep:
@@ -31,18 +30,7 @@ targets:
 
   2_prep/out/toha_glm3_nml_group.yml:
     command: write_glm3_nml_files(target_name, nml_list, site_ids = toha_model_ids,
-      base_nml = '2_prep/in/glm3_template.nml')
-
-  toha_local_run_plan:
-    command: create_toha_local_run_plan(toha_model_ids, nml_list = nml_list)
-
-  # had to remove "nhdhr_59746189", likely because it is very deep and the max layers set (300) was too few?
-  2_toha_tasks.yml:
-    command: create_toha_tasks_makefile(target_name, toha_local_run_plan,
-      final_targets = I('2_prep/out/toha_tasks.rds.ind'))
-
-  2_prep/out/toha_tasks.rds.ind:
-    command: scmake(I('toha_tasks.rds.ind_promise'), '2_toha_tasks.yml')
+      base_nml = '2_prep/in/glm3_template.nml', nml_dir = I('2_prep/tmp'))
 
   # these files should have been prefixed with pb0 to designate that they are uncalibrated defaults...
   2_prep/out/nml_file_group.yml:

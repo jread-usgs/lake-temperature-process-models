@@ -2,26 +2,38 @@
 
 target_default: 3_run
 
+include:
+  - 2_prep.yml
 
 packages:
   - scipiper
   - dplyr
   - glmtools
   - feather
+  - yaml
   - stringr
-
-include:
-  - 1_fetch.yml
 
 sources:
   - 2_prep/src/yeti_job_utils.R
   - 3_run/src/postproc_utils.R
+  - 3_run/src/local_task_utils.R
 
 targets:
   3_run:
     depends:
       - 2_prep/out/glm_pb0_array.rds
 
+
+  toha_local_run_plan:
+    command: create_toha_local_run_plan(nml_file_group = '2_prep/out/toha_glm3_nml_group.yml')
+
+  # had to remove "nhdhr_59746189", likely because it is very deep and the max layers set (300) was too few?
+  3_toha_tasks.yml:
+    command: create_toha_tasks_makefile(target_name, toha_local_run_plan,
+      final_targets = I('3_prep/out/toha_tasks.rds.ind'))
+
+  3_prep/out/toha_tasks.rds.ind:
+    command: scmake(I('toha_tasks.rds.ind_promise'), '3_toha_tasks.yml')
 
   files_to_zip:
     command: remove_wrr(I('3_run/out/temperature_obs.feather'))

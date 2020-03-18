@@ -15,7 +15,7 @@ write_glm3_nml_files <- function(fileout, nml_list, site_ids, base_nml, nml_dir)
       nsave = 1,
       start = '1979-04-01',
       stop = '2018-12-31',
-      max_layers = ceiling(100 * lake_depth),
+      max_layers = ceiling(6 * lake_depth),
       bsn_vals = length(nml_args$H),
       the_depths = c(0, floor(lake_depth*100)/100)
 
