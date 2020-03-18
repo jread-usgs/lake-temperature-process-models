@@ -39,7 +39,14 @@ rsconnect/
 
 *.rds
 *.nml
+!2_prep/in/glm3_template.nml
 *.csv
 *tasks_makefile.yml
 tmp_missing_lakes.R
+*.sim-scratch
+*sim-scratch
+2_prep/out/*.feather
+3_run/sync
+*.DS_Store
+*_tasks.yml
 

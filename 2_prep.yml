@@ -25,8 +25,13 @@ targets:
   2_prep:
     depends:
       - 2_prep/out/nml_file_group.yml
+      - 2_prep/out/toha_glm3_nml_group.yml
       - 2_prep/out/glm_pball_array.rds
       - 2_prep/out/temperature_obs.feather
+
+  2_prep/out/toha_glm3_nml_group.yml:
+    command: write_glm3_nml_files(target_name, nml_list, site_ids = toha_model_ids,
+      base_nml = '2_prep/in/glm3_template.nml')
 
   toha_local_run_plan:
     command: create_toha_local_run_plan(toha_model_ids, nml_list = nml_list)
