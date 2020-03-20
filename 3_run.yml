@@ -30,9 +30,9 @@ targets:
   # had to remove "nhdhr_59746189", likely because it is very deep and the max layers set (300) was too few?
   3_toha_tasks.yml:
     command: create_toha_tasks_makefile(target_name, toha_local_run_plan,
-      final_targets = I('3_prep/out/toha_tasks.rds.ind'))
+      final_targets = I('3_run/out/toha_tasks.rds.ind'))
 
-  3_prep/out/toha_tasks.rds.ind:
+  3_run/out/toha_tasks.rds.ind:
     command: scmake(I('toha_tasks.rds.ind_promise'), '3_toha_tasks.yml')
 
   files_to_zip:

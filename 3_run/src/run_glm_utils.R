@@ -16,24 +16,29 @@ run_toha_model <- function(nml_file, kw_data, site_id, meteo_fl, export_fl = NUL
 
   file.copy(meteo_fl, file.path(sim_dir, basename(meteo_fl)))
 
+  # run once with hourly output:
+  glmtools::write_nml(nml_obj, file.path(sim_dir, 'glm3.nml'))
+  GLM3r::run_glm(sim_dir, verbose = FALSE)
+  hourly_fn <- paste0(glmtools::get_nml_value(nml_obj, 'out_fn'), '.nc')
 
+  # run again with daily output:
+  daily_fn <- 'daily_out'
+  nml_obj <- set_nml(nml_obj, arg_list = list(nsave = 24, out_fn = daily_fn))
   glmtools::write_nml(nml_obj, file.path(sim_dir, 'glm3.nml'))
   GLM3r::run_glm(sim_dir, verbose = FALSE)
 
   out_dir <- glmtools::get_nml_value(nml_obj, arg_name = 'out_dir')
-  out_file <- paste0(glmtools::get_nml_value(nml_obj, arg_name = 'out_fn'), '.nc')
-  if (out_dir == '.'){
-    nc_path <- file.path(sim_dir, out_file)
-  } else {
-    nc_path <- file.path(sim_dir, out_dir, out_file)
-  }
+  daily_fn <- paste0(daily_fn, '.nc')
+
+  nc_hourly <- file.path(sim_dir, out_dir, hourly_fn)
+  nc_daily <- file.path(sim_dir, out_dir, daily_fn)
+
 
   if (!is.null(export_fl)){
-    export_as_daily(filepath = export_fl, nml_obj, nc_filepath = nc_path)
+    export_as_daily(filepath = export_fl, nml_obj, nc_daily = nc_daily,
+                    nc_hourly = nc_hourly)
   }
   unlink(sim_dir, recursive = TRUE)
-
-  invisible(nc_path)
 }
 
 run_glm <- function(sim_dir, nml_obj, export_file = NULL){
