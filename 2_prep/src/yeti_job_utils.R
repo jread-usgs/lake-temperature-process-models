@@ -102,7 +102,7 @@ build_transfer_job_list <- function(fileout, cal_nml_obj, base_nml_list, sim_ids
 
   all_jobs <- list()
   for (i in 1:length(sim_ids)){
-    sim_id <- sim_ids[i]
+    sim_id <- sim_ids[i] # this is the target_id
     source_ids <- sim_ids[!sim_ids %in% sim_id]
     this_job <- list(
       sim_id = sim_id,
@@ -132,8 +132,19 @@ build_transfer_job_list <- function(fileout, cal_nml_obj, base_nml_list, sim_ids
   saveRDS(all_jobs, fileout)
 }
 
+extract_source_ids <- function(array_job_file){
+  array_job <- readRDS(array_job_file)
 
-build_transfer_test_job_list <- function(fileout, cal_nml_obj, base_nml_list, source_ids, test_ids){
+  sapply(1:length(array_job), function(x){
+    array_job[[x]]$sim_id
+  })
+}
+
+read_jared_result_ids <- function(jared_results_file){
+  read_csv(jared_results_file) %>% mutate(target_id = paste0('nhdhr_', `target_id(nhdhr)`)) %>%
+    pull(target_id)
+}
+build_transfer_test_job_list <- function(fileout, cal_nml_obj, base_nml_list, source_ids, target_ids){
   # all_jobs <- list(
   #   list(
   #     sim_id = 'nhdhr_123423',
@@ -148,46 +159,29 @@ build_transfer_test_job_list <- function(fileout, cal_nml_obj, base_nml_list, so
 
   message('warning, this linked to the params used in `run_glm_cal` and they are hard-code here')
   all_jobs <- list()
-  for (i in 1:length(test_ids)){
-    sim_id <- test_ids[i]
+  for (i in 1:length(target_ids)){
+    sim_id <- target_ids[i]
     cat('.')
     this_job <- list(
       sim_id = sim_id,
       base_nml_file = sprintf('2_prep/sync/%s.nml', sim_id),
       meteo_file = sprintf('2_prep/sync/%s', base_nml_list[[sim_id]]$meteo_fl),
       source_id = source_ids,
+      source_nml = sprintf('2_prep/sync/%s.nml', source_ids),
+
       # something special for the params in optim:
+      #'cd','sw_factor','coef_mix_hyp'
 
       source_cd = sapply(source_ids, function(x){
         glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'cd')
       }, USE.NAMES = FALSE),
-      source_Kw = sapply(source_ids, function(x){
-        glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'Kw')
-      }, USE.NAMES = FALSE),
       source_coef_mix_hyp = sapply(source_ids, function(x){
         glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'coef_mix_hyp')
-      }, USE.NAMES = FALSE),
-      source_longitude = sapply(source_ids, function(x){
-        glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'longitude')
-      }, USE.NAMES = FALSE),
-      source_latitude = sapply(source_ids, function(x){
-        glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'latitude')
-      }, USE.NAMES = FALSE),
-      source_bsn_len = sapply(source_ids, function(x){
-        glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'bsn_len')
-      }, USE.NAMES = FALSE),
-      source_bsn_wid = sapply(source_ids, function(x){
-        glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'bsn_wid')
-      }, USE.NAMES = FALSE),
-      source_max_layer_thick = sapply(source_ids, function(x){
-        glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'max_layer_thick')
-      }, USE.NAMES = FALSE),
-      source_min_layer_thick = sapply(source_ids, function(x){
-        glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'min_layer_thick')
       }, USE.NAMES = FALSE),
       source_sw_factor = sapply(source_ids, function(x){
         glmtools::get_nml_value(cal_nml_obj[[x]], arg_name = 'sw_factor')
       }, USE.NAMES = FALSE),
+
       export_file = sprintf('3_run/sync/transfer_test_%s_rmse.csv', sim_id)
     )
     all_jobs[[i]] <- this_job

@@ -11,6 +11,7 @@ packages:
   - glmtools
   - feather
   - stringr
+  - readr
   - yaml
   - tidyr
 
@@ -66,7 +67,7 @@ targets:
     command: read_feather_ids('2_prep/in/Jared_TrainLakes.feather')
 
   jared_test_ids:
-    command: read_feather_ids('2_prep/in/Jared_TestLakes.feather')
+    command: read_jared_result_ids('2_prep/in/GLM_metamodel_predicted_sources_glm_transfer_pball_test_lakes.csv')
 
   2_prep/out/glm_pball_array.rds:
     command: build_pball_job_df(target_name, nml_list, sim_ids = cal_lakes) # jared_source_ids)
@@ -84,9 +85,12 @@ targets:
     command: build_transfer_job_list(target_name, cal_nml_obj = cal_result_nmls,
       base_nml_list = nml_list, sim_ids = jared_source_ids)
 
+  ran_source_ids:
+    command: extract_source_ids('2_prep/out/glm_transfer_array.rds')
+
   2_prep/out/glm_transfer_test_array.rds:
     command: build_transfer_test_job_list(target_name, cal_nml_obj = cal_result_nmls,
-      base_nml_list = nml_list, source_ids = jared_source_ids, test_ids = jared_test_ids)
+      base_nml_list = nml_list, source_ids = ran_source_ids, target_ids = jared_test_ids)
 
 
   2_prep/out/glm_pball_export_fails_array.rds:
