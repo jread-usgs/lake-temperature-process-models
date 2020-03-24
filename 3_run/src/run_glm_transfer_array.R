@@ -51,12 +51,17 @@ out_file <- file(export_file, "w")
 cat(sprintf('source_id,rmse,sim_time\n'), file = out_file)
 for (j in 1:length(these_jobs$source_id)){
   dir.create(sim_dir, recursive = TRUE) # recreate each time for freshness
+
+  # the source nml is the *uncalibrated* source nml; the params set below are the three (or more) cal params:
   src_nml_obj <- glmtools::read_nml(these_jobs$source_nml[j])
   info_names <- names(these_jobs)[!names(these_jobs) %in% c('source_id', 'source_nml')]
   param_names <- info_names[grepl(info_names, pattern = '^source')]
+
+  # getting the values for the calibrated parameters
   nml_args <- setNames(lapply(param_names, FUN = function(x){
     these_jobs[[x]][j]
   }), substring(param_names, first = 8, last = 1000000L)) # remove "source_"
+
   nml_args$meteo_fl <- basename(meteo_filepath)
   # write meteodata into fresh file
   readr::write_csv(driver_add_rain(meteo_data), path = meteo_filepath)
