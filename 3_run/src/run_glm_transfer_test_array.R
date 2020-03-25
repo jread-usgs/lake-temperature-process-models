@@ -31,9 +31,11 @@ meteo_filepath <- file.path(sim_dir, paste0(these_jobs$sim_id, '.csv'))
 
 base_nml <- these_jobs$base_nml_file
 nml_obj <- glmtools::read_nml(base_nml)
-nml_obj <- glmtools::set_nml(nml_obj, arg_name = 'meteo_fl', basename(meteo_filepath))
+export_depth <- glmtools::get_nml_value(nml_obj, 'lake_depth')
+# nml_obj <- glmtools::set_nml(nml_obj, arg_name = 'meteo_fl', basename(meteo_filepath))
 
 base_meteo <- these_jobs$meteo_file
+meteo_data <- readr::read_csv(base_meteo)
 export_file <- these_jobs$export_file
 caldata_fl <- file.path(sim_dir, paste0(these_jobs$sim_id, '_obs.csv'))
 

@@ -5,7 +5,7 @@ target_default: 1_fetch
 packages:
   - scipiper
   - dplyr
-  - sbtools
+  #- sbtools
 
 sources:
   - 1_fetch/src/sb_utils.R

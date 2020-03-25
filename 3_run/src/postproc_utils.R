@@ -17,3 +17,18 @@ summarize_transfer_glm <- function(fileout, dirname, pattern, n_runs, dummy){
     readr::write_csv(path = fileout)
 }
 
+
+summarize_transfer_test <- function(fileout, tasks_ind, transfer_metamodel_file){
+  transfer_data <- read_csv(transfer_metamodel_file) %>%
+    mutate(target_id = paste0('nhdhr_', `target_id(nhdhr)`),
+           source_id = paste0('nhdhr_', `best_predicted_site_id (nhdhr)`)) %>%
+    select(target_id, source_id, predicted_rmse)
+
+  result_files <- yaml.load_file(tasks_ind) %>% names
+  purrr::map(result_files, function(x){
+    feather::read_feather(x)
+  }) %>% purrr::reduce(bind_rows) %>% inner_join(transfer_data) %>%
+    rename(actual_rmse = rmse) %>%
+    write_csv(path = fileout)
+
+}
