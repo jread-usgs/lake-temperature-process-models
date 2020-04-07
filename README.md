@@ -47,14 +47,14 @@ then
 
 from R:
 ```r
-install.packages(c('remotes'))
+install.packages(c('stringi','stringr','dplyr','tidyr','rLakeAnalyzer','lubridate','remotes','ncdf4','readr','feather'))
 
 
 
-remotes::install_github('GLEON/GLM3r')
-remotes::install_github('GLEON/GLMr')
+#remotes::install_github('GLEON/GLM3r')
+#remotes::install_github('GLEON/GLMr')
 remotes::install_github('usgs-r/glmtools')
-remotes::install_github('mrc-ide/syncr')
+#remotes::install_github('mrc-ide/syncr')
 ```
 This project uses rsync and ssh to pull/push data/predictions from Yeti in the `1_get_lake_attr` and `2_model` phase. For this to work, SSH keys must be set up for communication with Yeti:
 
