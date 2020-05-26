@@ -13,8 +13,9 @@ run_toha_model <- function(nml_file, kw_data, site_id, meteo_fl, export_fl = NUL
   kw_data %>% filter(site_id == !!site_id,
                      time >= start & time <= stop) %>% select(time, Kd) %>%
     readr::write_csv(file.path(sim_dir, 'Kw_file.csv'))
-
-  file.copy(meteo_fl, file.path(sim_dir, basename(meteo_fl)))
+  readr::read_csv(meteo_fl) %>% mutate(Rain = case_when(Snow > 0 ~ 0, TRUE ~ Rain)) %>%
+    readr::write_csv(file.path(sim_dir, basename(meteo_fl)))
+  #file.copy(meteo_fl, file.path(sim_dir, basename(meteo_fl)))
 
   # run once with hourly output:
   glmtools::write_nml(nml_obj, file.path(sim_dir, 'glm3.nml'))

@@ -43,11 +43,13 @@ create_toha_tasks_makefile <- function(makefile, task_plan, final_targets){
 }
 
 
-create_transfer_local_run_plan <- function(job_array_file, transfer_metamodel_file){
+create_transfer_local_run_plan <- function(job_array_file, transfer_metamodel_file, target_range){
 
   job_array <- readRDS(job_array_file)
+  job_target_ids <- sapply(1:length(job_array), function(x)job_array[[x]]$sim_id)[target_range[1]:target_range[2]]
+  all_source_ids <- job_array[[1]]$source_id # each target has all of the same source IDs
 
-  job_target_ids <- sapply(1:length(job_array), function(x)job_array[[x]]$sim_id)
+  combo_ids <- sapply(job_target_ids, function(x) paste0(x, "_t|s_", all_source_ids)) %>% unlist() %>% c()
 
    transfer_data <- read_csv(transfer_metamodel_file) %>%
      mutate(target_id = paste0('nhdhr_', `target_id(nhdhr)`),
@@ -60,9 +62,15 @@ create_transfer_local_run_plan <- function(job_array_file, transfer_metamodel_fi
        sprintf('4_transfer/out/%s_rmse.feather', task_name)
      },
      command = function(task_name, step_name, ...) {
-       job_idx <- which(job_target_ids == task_name)
+       string_pieces <- stringr::str_split(task_name, '_t|s_')[[1]]
+       if(length(string_pieces) != 3){
+         stop('task_name didnt split as expected')
+       }
+       this_target_id <- string_pieces[1]
+       this_source_id <- string_pieces[3]
+
+       job_idx <- which(job_target_ids == this_target_id)
        these_jobs <- job_array[[job_idx]]
-       this_source_id <- filter(transfer_data, target_id == task_name) %>% pull(source_id)
 
        src_idx <- which(these_jobs$source_id == this_source_id)
        src_nml <- these_jobs$source_nml[src_idx]
@@ -82,7 +90,7 @@ create_transfer_local_run_plan <- function(job_array_file, transfer_metamodel_fi
                base_nml, src_nml, target_meteo, src_cd, src_coef_mix_hyp, src_sw_factor)
      }
    )
-   create_task_plan(transfer_data$target_id, list(run_transfer_step), final_steps='run_transfer', add_complete = FALSE)
+   create_task_plan(combo_ids, list(run_transfer_step), final_steps='run_transfer', add_complete = FALSE)
 }
 
 create_transfer_tasks_makefile <- function(makefile, task_plan, final_targets){

@@ -7,8 +7,6 @@ run_transfer_model <- function(output_fl,
                    src_sw_factor){
 
   if (file.exists(output_fl)){
-    feather::read_feather(output_fl) %>%
-      feather::write_feather(path = output_fl)
     return()
   }
 
@@ -23,7 +21,7 @@ run_transfer_model <- function(output_fl,
   export_depth <- glmtools::read_nml(base_nml) %>% glmtools::get_nml_value('lake_depth')
 
   base_meteo <- target_meteo
-  meteo_data <- readr::read_csv(base_meteo)
+  meteo_data <- readr::read_csv(base_meteo, col_types = 'Dddddddd', n_max = 14975)
   caldata_fl <- file.path(sim_dir, paste0(sim_id, '_obs.csv'))
 
   # filter data file, write to "calibration_obs.tsv" in sim_dir or pre-write the file?
@@ -50,13 +48,14 @@ run_transfer_model <- function(output_fl,
       tail(1) %>% pull(DateTime)
 
     if (lubridate::ceiling_date(last_time) < as.Date(glmtools::get_nml_value(this_nml_obj, "stop"))){
+      message('incomplete sim, ended on ', last_time)
       stop('incomplete sim, ended on ', last_time)
     }
 
     rmse <- extend_depth_calc_rmse(nc_path, field_file = caldata_fl,
                                    extend_depth = export_depth)
   }, error = function(e){
-    message(e)
+    message('returning error') #e
     return(-999)
   })
 

@@ -29,7 +29,8 @@ targets:
 
   transfer_local_run_plan:
     command: create_transfer_local_run_plan('2_prep/out/glm_transfer_test_array.rds',
-      '2_prep/in/GLM_metamodel_predicted_sources_glm_transfer_pball_test_lakes.csv')
+      '2_prep/in/GLM_metamodel_predicted_sources_glm_transfer_pball_test_lakes.csv',
+      target_range = I(c(2,9)))
 
   # had to remove "nhdhr_59746189", likely because it is very deep and the max layers set (300) was too few?
   3_toha_tasks.yml:
@@ -66,9 +67,10 @@ targets:
       n_runs = I(144),
       dummy = I('2020-02-10'))
 
-  3_run/out/RMSE_transfer_test_glm.csv:
+  3_run/out/RMSE_transfer_test_extended_glm.csv:
     command: summarize_transfer_glm(target_name,
       dirname = I("3_run/sync"), pattern = I('^transfer_test_nhdhr_.*_rmse.csv$'),
+      n_runs = I(145),
       dummy = I('2020-01-31'))
 
   3_run/out/temperature_obs.feather:
