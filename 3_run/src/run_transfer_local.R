@@ -22,12 +22,6 @@ run_transfer_model <- function(output_fl,
 
   base_meteo <- target_meteo
   meteo_data <- readr::read_csv(base_meteo, col_types = 'Dddddddd', n_max = 14975)
-  caldata_fl <- file.path(sim_dir, paste0(sim_id, '_obs.csv'))
-
-  # filter data file, write to "calibration_obs.tsv" in sim_dir or pre-write the file?
-  cal_obs <- feather::read_feather('2_prep/out/temperature_obs.feather') %>% filter(site_id == sim_id) %>%
-    group_by(date, depth) %>% summarise(temp = mean(temp)) %>%
-    select(DateTime = date, Depth = depth, temp)
 
   # the source nml is the *uncalibrated* source nml; the params set below are the three (or more) cal params:
   src_nml_obj <- glmtools::read_nml(src_nml)
@@ -40,9 +34,8 @@ run_transfer_model <- function(output_fl,
   readr::write_csv(driver_add_rain(meteo_data), path = meteo_filepath)
   this_nml_obj <- glmtools::set_nml(src_nml_obj, arg_list = nml_args)
 
-  rmse <- tryCatch({
+  tryCatch({
     nc_path <- run_glm(sim_dir, this_nml_obj, export_file = NULL)
-    readr::write_csv(cal_obs, caldata_fl)
 
     last_time <- glmtools::get_var(nc_path, 'wind') %>%
       tail(1) %>% pull(DateTime)
@@ -52,13 +45,9 @@ run_transfer_model <- function(output_fl,
       stop('incomplete sim, ended on ', last_time)
     }
 
-    rmse <- extend_depth_calc_rmse(nc_path, field_file = caldata_fl,
-                                   extend_depth = export_depth)
+    export_temp(filepath = output_fl, nml_obj = this_nml_obj, nc_filepath = nc_path)
   }, error = function(e){
-    message('returning error') #e
-    return(-999)
+    message('returning error')
   })
-
-  feather::write_feather(tibble(target_id = sim_id, source_id = source_id, rmse = rmse), path = output_fl)
 
 }

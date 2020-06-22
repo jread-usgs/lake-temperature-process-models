@@ -43,23 +43,24 @@ create_toha_tasks_makefile <- function(makefile, task_plan, final_targets){
 }
 
 
-create_transfer_local_run_plan <- function(job_array_file, transfer_metamodel_file, target_range){
+create_transfer_local_run_plan <- function(job_array_file, transfer_metamodel_file){
 
   job_array <- readRDS(job_array_file)
-  job_target_ids <- sapply(1:length(job_array), function(x)job_array[[x]]$sim_id)[target_range[1]:target_range[2]]
+  job_target_ids <- sapply(1:length(job_array), function(x)job_array[[x]]$sim_id)
   all_source_ids <- job_array[[1]]$source_id # each target has all of the same source IDs
 
-  combo_ids <- sapply(job_target_ids, function(x) paste0(x, "_t|s_", all_source_ids)) %>% unlist() %>% c()
+  #combo_ids <- sapply(job_target_ids, function(x) paste0(x, "_t|s_", all_source_ids)) %>% unlist() %>% c()
 
-   transfer_data <- read_csv(transfer_metamodel_file) %>%
-     mutate(target_id = paste0('nhdhr_', `target_id(nhdhr)`),
-            source_id = paste0('nhdhr_', `best_predicted_site_id (nhdhr)`)) %>%
-     select(target_id, source_id, predicted_rmse)
+  combo_ids <- read_csv(transfer_metamodel_file) %>%
+    mutate(target_id = paste0('nhdhr_', `target_id(nhdhr)`),
+           source_id = paste0('nhdhr_', `best_predicted_site_id (nhdhr)`)) %>%
+    mutate(combined_id = paste0(target_id, "_t|s_", source_id)) %>%
+             pull(combined_id)
 
-   run_transfer_step <- create_task_step(
+  run_transfer_step <- create_task_step(
      step_name = 'run_transfer',
      target_name = function(task_name, step_name, ...) {
-       sprintf('4_transfer/out/%s_rmse.feather', task_name)
+       sprintf('4_transfer/out/%s_temperatures.feather', task_name)
      },
      command = function(task_name, step_name, ...) {
        string_pieces <- stringr::str_split(task_name, '_t|s_')[[1]]
