@@ -31,7 +31,13 @@ targets:
     command: create_transfer_local_run_plan('2_prep/out/glm_transfer_test_array.rds',
       '2_prep/in/GLM_metamodel_predicted_sources_glm_transfer_pball_test_lakes.csv')
 
-  # had to remove "nhdhr_59746189", likely because it is very deep and the max layers set (300) was too few?
+  pb0_src_trg_plan:
+    command: create_pb0_local_run_plan(ran_source_ids, jared_test_ids, target_expansion_ids)
+
+# to get loop tasks to work in Yeti w/o access to the rest of the remakefiles:
+  pb0_src_trg_plan.rds:
+    command: saveRDS(pb0_src_trg_plan, target_name)
+
   3_toha_tasks.yml:
     command: create_toha_tasks_makefile(target_name, toha_local_run_plan,
       final_targets = I('3_run/out/toha_tasks.rds.ind'))
@@ -42,6 +48,10 @@ targets:
   3_transfer_tasks.yml:
     command: create_transfer_tasks_makefile(target_name, transfer_local_run_plan,
       final_targets = I('3_run/out/transfer_tasks.rds.ind'))
+
+  3_pb0_src_trg_tasks.yml:
+    command: create_pb0_tasks_makefile(target_name, pb0_src_trg_plan,
+      final_targets = I('3_run/out/pb0_src_trg_tasks.rds.ind'))
 
   files_to_zip:
     command: remove_wrr(I('3_run/out/temperature_obs.feather'))

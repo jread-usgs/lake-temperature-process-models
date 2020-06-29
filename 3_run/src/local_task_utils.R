@@ -42,6 +42,24 @@ create_toha_tasks_makefile <- function(makefile, task_plan, final_targets){
   create_task_makefile(task_plan, makefile, include = include, packages = packages, sources = sources, final_targets = final_targets)
 }
 
+create_pb0_local_run_plan <- function(...){
+  site_ids <- unique(c(...))
+
+  run_pb0_step <- create_task_step(
+    step_name = 'run_pb0_model',
+    target_name = function(task_name, step_name, ...) {
+      # pb0_nhdhr_120020090_temperatures.feather
+      sprintf('3_run/sync/pb0_%s_temperatures.feather', task_name)
+    },
+    command = function(task_name, step_name, ...) {
+      sprintf("run_pb0_model(output_fl = target_name,
+      nml_file = '2_prep/sync/%s.nml')",
+              task_name)
+    }
+  )
+  create_task_plan(site_ids, list(run_pb0_step), final_steps='run_pb0_model', add_complete = FALSE)
+
+}
 
 create_transfer_local_run_plan <- function(job_array_file, transfer_metamodel_file){
 
@@ -101,4 +119,12 @@ create_transfer_tasks_makefile <- function(makefile, task_plan, final_targets){
   sources <- c('3_run/src/run_glm_utils.R', '3_run/src/export_utils.R', '3_run/src/run_transfer_local.R')
 
   create_task_makefile(task_plan, makefile, include = include, packages = packages, sources = sources, final_targets = final_targets)
+}
+
+create_pb0_tasks_makefile <- function(makefile, task_plan, final_targets){
+
+  packages <- c('GLMr', 'glmtools', 'dplyr', 'readr')
+  sources <- c('3_run/src/run_glm_utils.R', '3_run/src/export_utils.R', '3_run/src/run_transfer_local.R')
+
+  create_task_makefile(task_plan, makefile, packages = packages, sources = sources, final_targets = final_targets)
 }

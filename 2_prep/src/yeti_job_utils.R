@@ -57,7 +57,6 @@ sync_drivers <- function(fileout, nml_list){
   sync_dir <- '2_prep/sync'
   file.copy(from = file.path('../lake-temperature-model-prep/7_drivers_munge/out', nml_meteo_files), to = file.path(sync_dir, nml_meteo_files), overwrite = TRUE)
 
-
   sc_indicate(fileout, data_file = file.path(sync_dir, nml_meteo_files))
 
 
@@ -256,7 +255,9 @@ build_job_list <- function(sim_ids, job_chunk, nml_list){
     all_jobs[[i]] <- data.frame(stringsAsFactors = FALSE,
                                 sim_id = paste0('pb0_', sim_ids[start_idx[i]:end_idx[i]]),
                                 nml_file = paste0('2_prep/sync/', sim_ids[start_idx[i]:end_idx[i]], '.nml'),
-                                meteo_file = paste0('2_prep/sync/', sapply(start_idx[i]:end_idx[i], FUN = function(x) nml_list[[x]]$meteo_fl)),
+                                meteo_file = paste0('2_prep/sync/', sapply(start_idx[i]:end_idx[i], FUN = function(x){
+                                  read_nml(paste0('2_prep/sync/', sim_ids[x], '.nml')) %>% get_nml_value(arg_name = 'meteo_fl')
+                                })),
                                 export_file = paste0('3_run/sync/pb0_', sim_ids[start_idx[i]:end_idx[i]], '_temperatures.feather'))
   }
   return(all_jobs)

@@ -42,6 +42,32 @@ run_toha_model <- function(nml_file, kw_data, site_id, meteo_fl, export_fl = NUL
   unlink(sim_dir, recursive = TRUE)
 }
 
+run_pb0_model <- function(output_fl, nml_file){
+  sim_id <- basename(tools::file_path_sans_ext(nml_file))
+  sim_dir <- file.path("sim-scratch", sim_id)
+
+  on.exit(unlink(sim_dir, recursive = TRUE))
+  dir.create(sim_dir)
+  meteo_filepath <- file.path(sim_dir, paste0(sim_id, '.csv'))
+  nml_obj <- glmtools::read_nml(nml_file)
+  export_depth <- glmtools::get_nml_value(nml_obj, 'lake_depth')
+  base_meteo <- glmtools::get_nml_value(nml_obj, 'meteo_fl')
+  meteo_data <- readr::read_csv(file.path(dirname(nml_file), base_meteo),
+                                col_types = 'Dddddddd', n_max = 14975)
+
+  nml_args <- list(meteo_fl = basename(meteo_filepath))
+  # write meteodata into fresh file
+  readr::write_csv(driver_add_rain(meteo_data), path = meteo_filepath)
+  this_nml_obj <- glmtools::set_nml(nml_obj, arg_list = nml_args)
+
+  tryCatch({
+    nc_path <- run_glm(sim_dir, this_nml_obj, export_file = output_fl)
+
+  }, error = function(e){
+    message('returning error')
+  })
+}
+
 run_glm <- function(sim_dir, nml_obj, export_file = NULL){
 
   glmtools::write_nml(nml_obj, file.path(sim_dir, 'glm2.nml'))

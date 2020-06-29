@@ -88,6 +88,11 @@ targets:
   ran_source_ids:
     command: extract_source_ids('2_prep/out/glm_transfer_array.rds')
 
+  target_expansion_ids:
+    command: extract_expansion_ids('../pgmtl-data-release/tmp/filtered_observations.rds',
+      target_ids = jared_test_ids,
+      source_ids = ran_source_ids)
+
   2_prep/out/glm_transfer_test_array.rds:
     command: build_transfer_test_job_list(target_name, cal_nml_obj = cal_result_nmls,
       base_nml_list = nml_list, source_ids = ran_source_ids, target_ids = jared_test_ids)

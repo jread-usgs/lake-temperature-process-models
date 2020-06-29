@@ -68,6 +68,7 @@ write_nml_files <- function(fileout, nml_list, base_nml){
   sc_indicate(fileout, data_file = files_out)
   dest_dir <- file.path('/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models', sync_dir )
   yeti_put(dest_dir = dest_dir, local_dir = sync_dir, files = basename(files_out))
+  message('**skipping yeti put')
 }
 
 #' @param nml_obj a list of nml objects (lists of class `nml`) that are full GLM configs

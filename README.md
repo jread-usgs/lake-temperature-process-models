@@ -12,7 +12,34 @@ If any of these files are changed / updated in this pipeline, remember to:
   1. copy the update .rds file to the dependent pipeline's drive (which is hyperlinked above) and to _ALSO_
   2. copy the updated .ind file to the dependent pipeline's github repository (which is also hyperlinked above)
 
+### end around on the batch jobs
+In order to get around the issue with UV being down, my VM being slow, and normal being even slower in batch mode, I set up a single node in normal for interactive mode, and ran scmake in R.
 
+I used rsync to get the new task table up to Yeti:
+```
+rsync -avz 3_pb0_src_trg_tasks.yml jread@yeti.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models/3_pb0_src_trg_tasks.yml
+```
+Used salloc to get 7 hours in interactive (in the end, I needed 5.5hrs to run 450 models):
+```
+salloc -A cida -n 1 -p normal -t 7:00:00
+```
+then ssh'd into the node I was given, and from there, got into the working directory
+```
+ssh n3-98
+cd /cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models
+```
+
+As a test of loop_tasks in parallel, I asked for 4 cores
+```
+salloc -A cida -n 4 -p normal -t 7:00:00
+
+rsync -avz pb0_src_trg_plan.rds jread@yeti.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models/pb0_src_trg_plan.rds
+
+```
+loaded modules on the node and then scipiper::loop_tasks() after installing `foreach` and `doParallel` on Yeti:
+```r
+loop_tasks(task_plan = readRDS('pb0_src_trg_plan.rds'), task_makefile = '3_pb0_src_trg_tasks.yml', n_cores = 4)
+```
 
 ### setting up Yeti
 
@@ -24,9 +51,15 @@ For installing packages, I did
 
 ```
 module avail #list of all avail
-module purge
-module load tools/nco-4.4.4-gnu ??tools/nco-4.7.8-gnu 
-module load tools/netcdf-4.3.2-gnu ??tools/netcdf-c-4.6.2-gnu
+module purge #DON'T DO THIS???
+module load legacy # had to do this w/ Yeti refresh
+module load R/3.6.3
+module load tools/nco-4.7.8-gnu 
+module load tools/netcdf-c-4.3.2-intel #tools/netcdf-c-4.6.2-gnu need this because there is a Yeti error where 
+
+
+#module load tools/nco-4.4.4-gnu ??tools/nco-4.7.8-gnu 
+#module load tools/netcdf-4.3.2-gnu ??tools/netcdf-c-4.6.2-gnu
 
  module list
 Currently Loaded Modulefiles:
@@ -49,7 +82,10 @@ from R:
 ```r
 install.packages(c('stringi','stringr','dplyr','tidyr','rLakeAnalyzer','lubridate','remotes','ncdf4','readr','feather'))
 
-
+library(remoates)
+install_github('tidyverse/dplyr@v0.8.5')
+install_version("vctrs", version = "0.2.4", repos = "http://cran.us.r-project.org")
+install_version("tidyr", version = "1.0.0", repos = "http://cran.us.r-project.org")
 
 #remotes::install_github('GLEON/GLM3r')
 #remotes::install_github('GLEON/GLMr')
@@ -84,11 +120,18 @@ rsync -avz .  jread@yeti.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lak
 # sync the job lists to yeti:
 cd 2_prep/out
 rsync -avz .  jread@yeti.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models/2_prep/out
+
+# sync task table to yeti:
+rsync -avz 3_pb0_src_trg_tasks.yml jread@yeti.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models/3_pb0_src_trg_tasks.yml
 ```
 
 sync from yeti
 ```
 cd 3_run/sync
 rsync -avz jread@yeti.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models/3_run/sync/. .
+
+cd 3_run/out
+rsync -avz jread@yeti.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models/3_run/out/pb0_src_trg_tasks.rds.ind pb0_src_trg_tasks.rds.ind 
+
 ```
 

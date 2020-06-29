@@ -1,4 +1,7 @@
-
+extract_expansion_ids <- function(filepath, target_ids, source_ids){
+  readRDS(filepath) %>% filter(!site_id %in% c(target_ids, source_ids)) %>%
+    pull(site_id) %>% unique() %>% sort()
+}
 
 read_feather_ids <- function(feather_file){
   feather::read_feather(feather_file)$nhdhr_id
