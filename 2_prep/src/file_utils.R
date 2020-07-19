@@ -3,6 +3,12 @@ extract_expansion_ids <- function(filepath, target_ids, source_ids){
     pull(site_id) %>% unique() %>% sort()
 }
 
+filter_unrun <- function(nml_list = nml_list, ...){
+  already_ran <- c(...)
+  all_ids <- names(nml_list)
+  return(all_ids[!all_ids %in% already_ran])
+}
+
 read_feather_ids <- function(feather_file){
   feather::read_feather(feather_file)$nhdhr_id
 }

@@ -27,9 +27,24 @@ targets:
   toha_local_run_plan:
     command: create_toha_local_run_plan(nml_file_group = '2_prep/out/toha_glm3_nml_group.yml')
 
+# a non-time-varying version of the toha runs
+  glm3_local_run_plan:
+    command: create_glm3_local_run_plan(nml_file_group = '2_prep/out/toha_glm3_nml_group.yml')
+
   transfer_local_run_plan:
     command: create_transfer_local_run_plan('2_prep/out/glm_transfer_test_array.rds',
       '2_prep/in/GLM_metamodel_predicted_sources_glm_transfer_pball_test_lakes.csv')
+
+# the _rest_ of the PB0 models
+  hyperscales_pb0_plan:
+    command: create_pb0_local_run_plan(hyperscales_unrun_ids)
+
+  hyperscales_pb0_plan.rds:
+    command: saveRDS(hyperscales_pb0_plan, target_name)
+
+  3_pb0_hyperscales_tasks.yml:
+    command: create_pb0_tasks_makefile(target_name, hyperscales_pb0_plan,
+      final_targets = I('3_pb0_hyperscales_tasks.ind'))
 
   pb0_src_trg_plan:
     command: create_pb0_local_run_plan(ran_source_ids, jared_test_ids, target_expansion_ids)
@@ -41,6 +56,13 @@ targets:
   3_toha_tasks.yml:
     command: create_toha_tasks_makefile(target_name, toha_local_run_plan,
       final_targets = I('3_run/out/toha_tasks.rds.ind'))
+
+  3_glm3_tasks.yml:
+    command: create_toha_tasks_makefile(target_name, glm3_local_run_plan,
+      final_targets = I('3_run/out/glm3_tasks.rds.ind'))
+
+  3_run/out/glm3_tasks.rds.ind:
+    command: scmake(remake_file = '3_glm3_tasks.yml')
 
   3_run/out/toha_tasks.rds.ind:
     command: scmake(I('toha_tasks.rds.ind_promise'), '3_toha_tasks.yml')
