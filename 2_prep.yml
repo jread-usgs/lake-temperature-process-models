@@ -37,8 +37,11 @@ targets:
   2_prep/out/nml_file_group.yml:
     command: write_nml_files(target_name, nml_list, base_nml = '2_prep/in/nhdhr_105231881.nml')
 
+  bad_segfault_lake:
+    command: c(I('nhdhr_59746189'))
+
   hyperscales_unrun_ids:
-    command: filter_unrun(nml_list = nml_list, ran_source_ids, jared_test_ids, target_expansion_ids)
+    command: filter_unrun(nml_list = nml_list, ran_source_ids, jared_test_ids, target_expansion_ids, bad_segfault_lake)
 
   # naming here should be pball instead of cal...geez a bunch of my decisions were shortsighted.
   2_prep/out/nml_cal_file_group.yml:

@@ -1,0 +1,11 @@
+version: 0.3.0
+name: 3_run/out/glm3_tasks.rds.ind
+type: file
+hash: ca1ed3c725460c7a2b82a0084edd2e9a
+time: 2020-07-05 22:26:22 UTC
+depends:
+  3_glm3_tasks.yml: 0c0f02292b3b245a137cb0fc771c3f62
+fixed: ~
+code:
+  functions: {}
+

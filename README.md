@@ -18,6 +18,9 @@ In order to get around the issue with UV being down, my VM being slow, and norma
 I used rsync to get the new task table up to Yeti:
 ```
 rsync -avz 3_pb0_src_trg_tasks.yml jread@yeti.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models/3_pb0_src_trg_tasks.yml
+
+#or
+rsync -avz 3_pb0_hyperscales_tasks.yml jread@yeti.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models/3_pb0_hyperscales_tasks.yml
 ```
 Used salloc to get 7 hours in interactive (in the end, I needed 5.5hrs to run 450 models):
 ```
@@ -34,11 +37,13 @@ As a test of loop_tasks in parallel, I asked for 4 cores
 salloc -A cida -n 4 -p normal -t 7:00:00
 
 rsync -avz pb0_src_trg_plan.rds jread@yeti.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models/pb0_src_trg_plan.rds
-
+rsync -avz hyperscales_pb0_plan.rds  jread@yeti.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models/hyperscales_pb0_plan.rds
 ```
 loaded modules on the node and then scipiper::loop_tasks() after installing `foreach` and `doParallel` on Yeti:
 ```r
 loop_tasks(task_plan = readRDS('pb0_src_trg_plan.rds'), task_makefile = '3_pb0_src_trg_tasks.yml', n_cores = 4)
+#or
+loop_tasks(task_plan = readRDS('hyperscales_pb0_plan.rds'), task_makefile = '3_pb0_hyperscales_tasks.yml', n_cores = 8)
 ```
 
 ### setting up Yeti
@@ -56,6 +61,8 @@ module load legacy # had to do this w/ Yeti refresh
 module load R/3.6.3
 module load tools/nco-4.7.8-gnu 
 module load tools/netcdf-c-4.3.2-intel #tools/netcdf-c-4.6.2-gnu need this because there is a Yeti error where 
+#module load gdal/2.2.0-gcc
+#module load proj/5.2.0-gcc-7.1.0
 
 
 #module load tools/nco-4.4.4-gnu ??tools/nco-4.7.8-gnu 
@@ -123,15 +130,19 @@ rsync -avz .  jread@yeti.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lak
 
 # sync task table to yeti:
 rsync -avz 3_pb0_src_trg_tasks.yml jread@yeti.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models/3_pb0_src_trg_tasks.yml
+
+rsync -avz 3_pb0_hyperscales_tasks.yml jread@yeti.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models/3_pb0_hyperscales_tasks.yml
 ```
 
 sync from yeti
 ```
 cd 3_run/sync
-rsync -avz jread@yeti.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models/3_run/sync/. .
+rsync -avz jread@yeti-dtn1.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models/3_run/sync/. .
 
 cd 3_run/out
 rsync -avz jread@yeti.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models/3_run/out/pb0_src_trg_tasks.rds.ind pb0_src_trg_tasks.rds.ind 
+
+rsync -avz jread@yeti.cr.usgs.gov:/cxfs/projects/usgs/water/iidd/data-sci/lake-temp/lake-temperature-process-models/3_run/out/pb0_hyperscales_tasks.ind pb0_hyperscales_tasks.ind
 
 ```
 

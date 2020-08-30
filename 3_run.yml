@@ -44,7 +44,7 @@ targets:
 
   3_pb0_hyperscales_tasks.yml:
     command: create_pb0_tasks_makefile(target_name, hyperscales_pb0_plan,
-      final_targets = I('3_pb0_hyperscales_tasks.ind'))
+      final_targets = I('3_run/out/pb0_hyperscales_tasks.ind'))
 
   pb0_src_trg_plan:
     command: create_pb0_local_run_plan(ran_source_ids, jared_test_ids, target_expansion_ids)
