@@ -33,7 +33,7 @@ targets:
 
   transfer_local_run_plan:
     command: create_transfer_local_run_plan('2_prep/out/glm_transfer_test_array.rds',
-      '2_prep/in/GLM_metamodel_predicted_sources_glm_transfer_pball_test_lakes.csv')
+      '2_prep/in/PB-MTL_results_single_source_wMetafeatures - pbmtl_glm_transfer_results_Aug21.csv')
 
 # the _rest_ of the PB0 models
   hyperscales_pb0_plan:

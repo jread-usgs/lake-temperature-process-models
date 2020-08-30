@@ -100,11 +100,8 @@ create_transfer_local_run_plan <- function(job_array_file, transfer_metamodel_fi
   job_target_ids <- sapply(1:length(job_array), function(x)job_array[[x]]$sim_id)
   all_source_ids <- job_array[[1]]$source_id # each target has all of the same source IDs
 
-  #combo_ids <- sapply(job_target_ids, function(x) paste0(x, "_t|s_", all_source_ids)) %>% unlist() %>% c()
 
   combo_ids <- read_csv(transfer_metamodel_file) %>%
-    mutate(target_id = paste0('nhdhr_', `target_id(nhdhr)`),
-           source_id = paste0('nhdhr_', `best_predicted_site_id (nhdhr)`)) %>%
     mutate(combined_id = paste0(target_id, "_t|s_", source_id)) %>%
              pull(combined_id)
 
