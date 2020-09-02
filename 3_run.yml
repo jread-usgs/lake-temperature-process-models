@@ -102,7 +102,7 @@ targets:
     command: summarize_transfer_glm(target_name,
       dirname = I("3_run/sync"), pattern = I('^transfer_test_nhdhr_.*_rmse.csv$'),
       n_runs = I(145),
-      dummy = I('2020-01-31'))
+      dummy = I('2020-09-03'))
 
   3_run/out/temperature_obs.feather:
     command: subset_temperature(target_name, files_to_zip, '../lake-temperature-model-prep/7b_temp_merge/out/merged_temp_data_daily.feather')
