@@ -47,8 +47,10 @@ cal_obs <- feather::read_feather('2_prep/out/temperature_obs_resampled.feather')
 
 
 
-#out_file <- file(export_file, "w")
-#cat(sprintf('source_id,rmse,sim_time\n'), file = out_file)
+
+
+out_file <- file(export_file, "w")
+cat(sprintf('source_id,rmse,sim_time\n'), file = out_file)
 for (j in 1:length(these_jobs$source_id)){
   dir.create(sim_dir, recursive = TRUE) # recreate each time for freshness
 
@@ -88,7 +90,8 @@ for (j in 1:length(these_jobs$source_id)){
   unlink(sim_dir, recursive = TRUE)
 
   sim_time = format(Sys.time(), '%Y-%m-%d %H:%M')
-  #cat(sprintf('%s,%s,%s\n', these_jobs$source_id[j], rmse, sim_time), file = out_file)
+  cat(sprintf('%s,%s,%s\n', these_jobs$source_id[j], rmse, sim_time), file = out_file)
 }
-#close(out_file)
+close(out_file)
+
 
