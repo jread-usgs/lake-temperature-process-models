@@ -13,8 +13,13 @@ summarize_transfer_glm <- function(fileout, dirname, pattern, n_runs, dummy){
   use_targets <- group_by(tran_results, target_id) %>% tally() %>%
     filter(n == !!n_runs) %>% pull(target_id)
 
-  tran_results %>% filter(target_id %in% use_targets) %>% select(-cr_time) %>%
-    readr::write_csv(path = fileout)
+  filtered_results <- filter(tran_results, target_id %in% use_targets) %>% select(-cr_time)
+
+  if (any(is.na(filtered_results$rmse)) | any(filtered_results$rmse == -999)){
+    stop('there are issues in the matrix result')
+  }
+
+  readr::write_csv(filtered_results, path = fileout)
 }
 
 
