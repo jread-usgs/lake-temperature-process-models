@@ -35,22 +35,20 @@ export_depth <- glmtools::get_nml_value(nml_obj, 'lake_depth')
 # nml_obj <- glmtools::set_nml(nml_obj, arg_name = 'meteo_fl', basename(meteo_filepath))
 
 base_meteo <- these_jobs$meteo_file
-meteo_data <- readr::read_csv(base_meteo)
+meteo_data <- readr::read_csv(base_meteo, n_max = 14975)
 export_file <- these_jobs$export_file
 caldata_fl <- file.path(sim_dir, paste0(these_jobs$sim_id, '_obs.csv'))
 
 # filter data file, write to "calibration_obs.tsv" in sim_dir or pre-write the file?
-cal_obs <- feather::read_feather('2_prep/out/temperature_obs.feather') %>% filter(site_id == these_jobs$sim_id) %>%
+cal_obs <- feather::read_feather('2_prep/out/temperature_obs_resampled.feather') %>% filter(site_id == these_jobs$sim_id) %>%
   group_by(date, depth) %>% summarise(temp = mean(temp)) %>%
   select(DateTime = date, Depth = depth, temp)
 
 
 
 
-
-
-out_file <- file(export_file, "w")
-cat(sprintf('source_id,rmse,sim_time\n'), file = out_file)
+#out_file <- file(export_file, "w")
+#cat(sprintf('source_id,rmse,sim_time\n'), file = out_file)
 for (j in 1:length(these_jobs$source_id)){
   dir.create(sim_dir, recursive = TRUE) # recreate each time for freshness
 
@@ -81,6 +79,7 @@ for (j in 1:length(these_jobs$source_id)){
     }
 
     rmse <- extend_depth_calc_rmse(nc_path, field_file = caldata_fl,
+                                   src_depth = get_nml_value(src_nml_obj, 'lake_depth'),
                                    extend_depth = export_depth)
   }, error = function(e){
     message(e)
@@ -89,7 +88,7 @@ for (j in 1:length(these_jobs$source_id)){
   unlink(sim_dir, recursive = TRUE)
 
   sim_time = format(Sys.time(), '%Y-%m-%d %H:%M')
-  cat(sprintf('%s,%s,%s\n', these_jobs$source_id[j], rmse, sim_time), file = out_file)
+  #cat(sprintf('%s,%s,%s\n', these_jobs$source_id[j], rmse, sim_time), file = out_file)
 }
-close(out_file)
+#close(out_file)
 
