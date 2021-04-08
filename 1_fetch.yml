@@ -31,14 +31,14 @@ targets:
   # this is pretty redundant with pb0_config.json, but is _only_ the params that change from lake to lake
   # we need if for the time being right now
   nml_list:
-    command: filter_nml_list('../lake-temperature-model-prep/7_config_merge/out/nml_list.rds')
+    command: filter_nml_list('3_run/in/nml_list.rds')
 
   # note that including Kw drops modeled lakes from 13,384 to 6,922
   model_ids:
     command: names(nml_list)
 
   kw_data:
-    command: readRDS("../lake-temperature-model-prep/4_params_munge/out/toha_varying_kw.rds")
+    command: readRDS("3_run/in/toha_varying_kw.rds")
 
   toha_model_ids:
     command: filter_toha_models(nml_list,
