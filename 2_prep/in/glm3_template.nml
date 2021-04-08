@@ -128,7 +128,7 @@
    crest_factor = 0.61
 /
 &snowice
-   dt_iceon_avg = 0.2
+   dt_iceon_avg = 0.01
    min_ice_thickness = 0.01
    snow_albedo_factor = 0.72
 /

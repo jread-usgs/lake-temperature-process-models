@@ -9,6 +9,8 @@ write_glm3_nml_files <- function(fileout, nml_list, site_ids, base_nml, nml_dir)
     lake_depth <- nml_args$lake_depth
     sim_name <- nml_args$site_id
     nml_args$site_id <- NULL
+    # need to update the meteo_fl here...
+    nml_args$meteo_fl <- gsub(pattern = '0.367700', replacement = '0.359420', x = nml_args$meteo_fl)
 
     nml_args <- append(nml_args, list(
       sim_name = sim_name,
